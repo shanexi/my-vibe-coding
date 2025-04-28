@@ -65,7 +65,6 @@ export interface Typegen2 {
         '@@xstate/typegen': true;
         internalEvents: {
           "xstate.init": { type: "xstate.init" };
-"xstate.stop": { type: "xstate.stop" };
         };
         invokeSrcNameMap: {
           
@@ -77,8 +76,8 @@ export interface Typegen2 {
           services: never;
         };
         eventsCausingActions: {
-          "Mute microphone": "Mute" | "xstate.init";
-"Unmute microphone": "Unmute" | "xstate.stop";
+          "Mute microphone": "Mute";
+"Unmute microphone": "Unmute";
         };
         eventsCausingDelays: {
           

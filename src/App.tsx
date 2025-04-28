@@ -1,18 +1,19 @@
 import { useMachine } from "@xstate/react";
 import { callMachine } from "../demoMachine";
+import { useEffect } from "react";
+
+function consoleLogTransition() {
+  const newState = callMachine.transition(callMachine.initialState, {
+    type: "Unmute",
+  });
+  console.log(newState.value, newState.context, newState.actions);
+}
 
 function App() {
-  const [state, send] = useMachine(callMachine, {
-    actions: {
-      "Mute microphone"() {
-        alert("Microphone is muted");
-      },
-      "Unmute microphone"() {
-        alert("Microphone is unmuted");
-      },
-    },
-  });
-
+  const [state, send] = useMachine(callMachine);
+  useEffect(() => {
+    consoleLogTransition();
+  }, []);
   return (
     <>
       <div className="card">

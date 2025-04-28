@@ -1,7 +1,7 @@
 import { assign, createMachine } from "xstate";
 
 export const dogMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QBED2UB0BBWAbMYADgMQAyqArhAAQByqAlgMZgDaADALqKiGqwMALg1QA7HiAAeiAKwAmADQgAnogBsAZgAsGNQEYAHDK0GA7Ho2mNBtQF9bStJhz4ixAMoBbMLlyxqAGKoqBAc3EggfALCYhLSCPJKqggGehgacnIAnIYyamZZcjIy9o7o2ADuAIYA1mDEAVW+-lV4BIRhElFCIuIR8VqFGFqm8qZq7GZqWWpaWkmIRey6WjJGa+z6WnIZpSBOlbVgGO6uhMpklDSijCydEd0xfaDxcnoyGMVa+QapWuymOTsGQLBDWDQYIEyUyFKF6bKmPYHLDVOoYABCYCgUAYoigxAA4gwAG5gaiCABOYCqgnuvH4PVi-UQZlBclMy2BNkMcx+ejsexuEDgEicXQZTziiAAtFlQdKBWVnG0iOLor0pQhNFkMAZNgCYaY5nptmyZMtUtZ2exgRpNnpEQ59uUUUc1YznlJEBo5SpEIY5BgrHlTH9tGoIxokS7UcdTu1kvT1UyXogsjqOQGDED08Z2aDwekrKNAYD+bsncjYycmFUqRB3ZLmWDoZ8DQZ-nosuZ5n6wVllmpMuw3pMJm9HUrDmjMdjcVBGxrm1kdBo9OuV+mYSN832MjpfloHVprAP4VH7LYgA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QBED2UB0BBWAbMYADgMQAyqArhAAQByqAlgMZgDaADALqKiGqwMALg1QA7HiAAeiAKwAmADQgAnogBsAZgAsGNQEYAHDK0GA7Ho2mNBtQF9bStJhz4ixAMoBbMLlyxqAGKoqBAc3EggfALCYhLSCPJKqggGehgacnIAnIYyamZZcjIy9o7o2ADuAIYA1mDEAVW+-lV4BIRhElFCIuIR8VqFGFqm8qZq7GZqWWpaWkmIRey6WjJGa+z6WnIZpSBOlbVgGO6uhMpklDSijCydEd0xfaDxcnoyGMVa+QapWuymOTsGQLBDWDQYIEyUyFKF6bKmPYHLDVOoYABCYCgUAYoigxAA4gwAG5gaiCABOYCqgnuvH4PVi-UQZlBclMy2BNkMcx+ejsDn25Rc7WIklgghpxyqADNBGAKQAKPTsVXsACUxGRbSIdMiDKecVk5khRg0GgsalGchsoMsOm07H+KvYWQMcmm9kFNwgcAkTi6Bt6RoQAFosqDQx8sjHY2oPeaOdkkcKdYRA9Fg8yEJosrp8hbTICbDM9HaVbpTL9pm7LHJBinnKiwBnGc8pIgNBGVIhDHIMFZoYZfnptu6BWUm0cTmdkvTM0yXogYwP2H33a6ssZ2XaDBDLJZoey3po5I3Dmj3EwqlSIK3DdmNNDPgCq86suZ5j2wVllvGgW8kwTG8iKCsizYYliOJ4veWZLggWQOnoyGITGMIjDu34ZDovxaHophaNYv7whoXq2EAA */
   id: "Dog",
   initial: "Awake",
   tsTypes: {} as import("./demoMachine.typegen").Typegen0,
@@ -9,8 +9,12 @@ export const dogMachine = createMachine({
     Asleep: {
       on: {
         "Loud Noice": "Awake.Scared",
-        "Smells Food": "Awake.Sleepy",
+        "Smells Food": "Awake.Sleepy"
       },
+
+      after: {
+        "10000": "Awake"
+      }
     },
     Awake: {
       on: {
@@ -194,7 +198,7 @@ export const counter = createMachine({
 });
 
 export const authenticationMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QEECuAXAFmAduglgMYCGBA9jgHQDC2hA1vjlAASqxgBOLADlwLb5YsfBVgsANmABuYCQGIIFMJSbSy9FWiy4CJclVpgGTVuy68BQkWMky5CNWX2icAbQAMAXU9fEoHjIRA38QAA9EAGYADgBWSgAWDwSATljIlJSARkiANgAmFIAaEABPRCyE-MpK3ISEgHZIhoToho9o3IBfLpLtbDwiUlcaOkZmNg5uPk5BYVdxKVkFJRwVJ01Kft0hg1HjcbMpy1nrBbtlxxx1FwpfNyy-JBBA4NdQiIQY+KTU9MycgVimVEPkPB5KLk8h5mrkPFloglIjEen0MAM9MMKPsTBNzNMrPNbEs5IplKprhotOidrdDGNTJMLDM5jYcIt7BIrjcse5vG58k8AkF8CFnp9volkmkMtk8oUSuUvnFKClIlUwflkRl8g1USBtoM6TjDkyCacieyLqSuJwyJxKDwJKQAGb2-hbGlG3kmxn4k6s84krlOOn3byhV6i97iqIq34ygHy4FKwrxXJZFIeAEpBKxXXdXoGr2YvZGXFHZmEtkc5byW32x3O9Bu2aenTessMvHHFlnYmc7nOXn3R6RkVi0AS+PS-5yoGKqJJSgNBq5XKxFINHIpOFZQtojulkYAFXw-DAZAw8gASgBRE83gCavnHbwoH0Q26ykKysWi0SRPu7Tbgki4IPkeYrmqm7RFk+TwQ0m75PqhrHti5amv6faWrWpLUMgABy1B3gAMq+zxRpO4Rxj8s6yoCCogggcGUJE+SFFkCKbruGR6vqOBkBAcChGhuwxsK744J+CAALS5OBsnxJkKmqWpkSoSW4kYd2lbmoGA7LG+0YfrGCBVOB7ENCuyJxP+G7gmCB7Fke2lUMgECCNJlEThJNEsRxkIeLECTrtEW6NFq4E7qq0TJOx+ZceCKSaa5xqEe6xASMZ1GfNEgVwiFYURQ0UXMZm0SJO0HgcS0cVNAkqUYm5lAZQG-beZJJmdf5+XVIVoW5OFLSlZEllrpQsSZrmMIJFkDRqilRZicaZ4Xle6A5X5eUFcFg3DZFY3MfkbSUG0lRxLuaRpM5K0+tQxA4IQciQFtplTogfVBUVQ0lWVSqsakHQpLVYING0KE9F0QA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QEECuAXAFmAduglgMYCGBA9jgHQDC2hA1vjlAASqxgBOLADlwLb5YsfBVgsANmABuYCQGIIFMJSbSy9FWiy4CJclVpgGTVuy68BQkWMky5CNWX2icAbQAMAXU9fEoHjIRA38QAA9EAGYADgBWSgAWDwSATljIlJSARkiANgAmFIAaEABPRCyE-MpK3ISEgHZIhoToho9o3IBfLpLtbDwiUlcaOkZmNg5uPk5BYVdxKVkFJRwVJ01Kft0hg1HjcbMpy1nrBbtlxxx1FwpfNyy-JBBA4NdQiIQY+KTU9MycgVimVEPkPB5KLk8h5mrkPFloglIjEen0MAM9MMKPsTBNzNMrPNbEs5IplKprhotOidrdDGNTJMLDM5jYcIt7BIrjcse5vG58k8AkF8CFnp9volkmkMtk8oUSuUvnFKClIlUwflkRl8g1USBtoM6TjDkyCacieyLqSuJwyJxKDwJKQAGb2-hbGlG3kmxn4k6s84krlOOn3byhV6i97iqIq34ygHy4FKwrxXJZFIeAEpBKxXXdXoGr2YvZGXFHZmEtkc5byW32x3O9Bu2aenTessMvHHFlnYmc7nOXn3R6RkVi0AS+PS-5yoGKqJJSgNBq5XKxFINHIpOFZQtojulkbl03+vuW2uk6jIABy1AAogAZXzjt4UD5xn6z2WAhUghBoiyShInyQosgRTddwyPUi0NY9sQAFXwfgwDIDB5AAJQfRDMIATVfZ4o0ncJEG3YCM1iaJokifd2m3BJFwQfI8xXNVNyA-Isl1Td8n1eDdhPbtK3NQMBzrMJYHQUgVGIF10C4AAKLJYnBABKeQBONU8-V7asg05QjhXfHBPy+dUpT+BJ1wgqEtyY+oEhXKjGgaaIUjA-JclgoscDICA4FCLTeTfaMP1jBAAFpciYyL4kyTJqKg2JvKSFJ+JLQTsR0nsqwtGtrQkUKSM+KomNAhoV2ROIqI3cEwQPYsjyyqhkAgQRTKIicYynRBojAyEPFiazcncloGi1Jid1VaJklA-MIPBdK4My41b3dYgiq6kyzP66o4WG9cxsaSaAMzaJEnaDwwJaWamgSDLmrWsgA37TrjLC97SMAgaDpG46Jsicq10oWJM1zGEEiyBo1WWw8MRayhkNQ9D0GKnrvr2wbDtGrcTqBgD8jaSg2kqOJdzSNJGuCstiBwQg5EgdHwt6n79qG-68cBpigMSLN3JusE3ImnoeiAA */
   tsTypes: {} as import("./demoMachine.typegen").Typegen4,
   schema: {} as {
     services: {
@@ -237,6 +241,10 @@ export const authenticationMachine = createMachine({
 
       on: {
         CANCEL: "Canceled"
+      },
+
+      after: {
+        "1500": "Timeout"
       }
     },
 

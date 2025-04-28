@@ -4,7 +4,8 @@
   export interface Typegen0 {
         '@@xstate/typegen': true;
         internalEvents: {
-          "xstate.init": { type: "xstate.init" };
+          "xstate.after(10000)#Dog.Asleep": { type: "xstate.after(10000)#Dog.Asleep" };
+"xstate.init": { type: "xstate.init" };
         };
         invokeSrcNameMap: {
           
@@ -130,6 +131,7 @@ export interface Typegen4 {
         internalEvents: {
           "done.invoke.Authentication.Checking user permissions level:invocation[0]": { type: "done.invoke.Authentication.Checking user permissions level:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
 "error.platform.Authentication.Checking user permissions level:invocation[0]": { type: "error.platform.Authentication.Checking user permissions level:invocation[0]"; data: unknown };
+"xstate.after(1500)#Authentication.Checking user permissions level": { type: "xstate.after(1500)#Authentication.Checking user permissions level" };
 "xstate.init": { type: "xstate.init" };
         };
         invokeSrcNameMap: {

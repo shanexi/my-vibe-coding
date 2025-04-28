@@ -88,8 +88,9 @@ export interface Typegen2 {
         eventsCausingServices: {
           
         };
-        matchesStates: "Microphone" | "Microphone.Mute" | "Microphone.Unmuted" | "Video" | "Video.Hiding video" | "Video.Showing video" | { "Microphone"?: "Mute" | "Unmuted";
-"Video"?: "Hiding video" | "Showing video"; };
+        matchesStates: "Microphone" | "Microphone.Mute" | "Microphone.Unmuted" | "Video" | "Video.Hiding video" | "Video.Showing video" | "Wilecard area" | "Wilecard area.Bar" | "Wilecard area.Foo" | { "Microphone"?: "Mute" | "Unmuted";
+"Video"?: "Hiding video" | "Showing video";
+"Wilecard area"?: "Bar" | "Foo"; };
         tags: never;
       }
 

@@ -1,8 +1,8 @@
 import { useMachine } from "@xstate/react";
-import { counter } from "../demoMachine";
+import { callMachine } from "../demoMachine";
 
 function App() {
-  const [state, send] = useMachine(counter);
+  const [state, send] = useMachine(callMachine);
   return (
     <>
       <div className="card">

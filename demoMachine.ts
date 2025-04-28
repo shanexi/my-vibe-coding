@@ -64,7 +64,7 @@ export const walkMachine = createMachine({
 });
 
 export const callMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QGECGAbdACAtqgxgBYCWAdmAHQCyx+ATgPYAOhD51ArgC5gDEAqqRzcwAbQAMAXUSgmDWMS7E2MkAA9EARgAsADgoBOAwGYDAdmMBWKwb2bjAGhABPRACYLFbeM0HN48VtLXW0AX1CnNExcAhJ2GnpmVnZBYR4IXioRCWkkEDkFJRU8jQR7MwoQ411dN3E67WNtaydXBANLClMjTTdLADYTGuN+8MiMbDwiMkoANWIIMAYKAGVWAHcyKCwANwWl3gAJfd39hhzVAsVlUlVSt1MvC1qQ3TM-A11HF0RLM31dJ8-JZzMF-mYxiAopNYjMKPNFstjhAtqdEbw1gx1milhc8lcircSu5Htpnm5Xu9fF9Wr83AYKOILMYzIMTGYzMFwhEQKQGIt4HloTFpuRLvJrsVQKUALSaXTiCj9Uycyz1cTNJn9WkIGXvChuZp+fraU3GQKWSHCqZxSgJRgsNhgcWFG53RBy4xuJUqyxqhpq1k6-RaowK-p9UyNTRWiYi23UWgO5J2kQuyVE6UekI+0H+jWB3Q6zSDLzWT7VXT+PoGWPRG1w+1JJ0UVIiCDpwnuhDNCoWaz0nQmczfNqafVvMxuNz9Etq81WOsw0VzM6dt3EhB9QwNNyaHSmiO9Sw602aCicjURvSDGe1nnW2HsBFLVYbVF7RHrqXqRCeAy7vupraEeo6-E0lTTh0Iz2ICHRLvGcIvkiCwfmu+ISl2m7VJ0Hy9B0nLaOO2g6tYFRevS1iztURiWtyQA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QGECGAbdACAtqgxgBYCWAdmAHQCyx+ATgPYAOhD51ArgC5gDEAqqRzcwAbQAMAXUSgmDWMS7E2MkAA9EARgBsADgoAmTQHYALAGZtATm3nxl8QFYANCACeiU6f26rm3cYGppriBua6BgC+ka5omLgEJOw09Mys7ILCPBC8VCIS0kggcgpKKkUaCP6mFOK2xlYG4r562g2uHgjmjuYU2ib+1ubDVk6m0bEY2HhEZJQAasQQYAwUAMqsAO5kUFgAbksrvAASh-uHDAWqJYrKpKqVYcYUjj3d4sbGTtriVsYdiC+vXMmlMVisph6fnMExAcWmiTmFEWy1WpwgO3OqN4GwYmyxKyuRRuZXuFUQTxeb0cHy+jh+fwBCG0PQo3isjgMARC3hMsPhCVm7AA6sR0GB8Kg6BAsFKwKgKAAxBgMXgAKiJsnkt3KoEqOnEfUcul0tlNnw+5iZmj+bK+4lMgQsxjsVn5U0FSUoovFkulsro8ooACEperNcVtaSHlofkaTWa2l8XdaaX1Ibp3gFGo1xrDSAxlvAigKZl7rlG7jGEABaIJMut5ybxMtIlKMFhsMAV0pV8kIevuCnabSGCEGRxWczgnoT7TuluI5K0DvpSh5Hg9nVkvWAgxM8IGWrQkHWJp2TQLhFC9crtJdiiZEQQLfR-uWGpWE0TgINb+mA9dBqSdNGGHRGnscQ+RiOEPVbdgURWV8+13AcAKHBB6VHHQRy8UwRx0HQr09JFENWXFtlIXYDlRZDdXUPcmRZKxDGnOoPxpIx5xg0slwWC4KHRTEaKQ4lK3oypwl6cFTUnV4dFMLimP6CgXVGKd+kdKDjGI+DvTFCUpRlOVUDoncGLQpjgQMAw-GMRwLBsfCoh4uC+IoH1DP9EylRVMzq0CVMal8R0aQ5SdtC5XRdPczy-WMwMFVDOh-P7IwWO8B1dHsbpssCTRU2eadQt+V4bCi6JoiAA */
   tsTypes: {} as import("./demoMachine.typegen").Typegen2,
   id: "Call machine",
   type: "parallel",
@@ -91,6 +91,7 @@ export const callMachine = createMachine({
 
       initial: "Mute",
     },
+
     Video: {
       states: {
         "Showing video": {
@@ -107,6 +108,24 @@ export const callMachine = createMachine({
       },
 
       initial: "Showing video",
+    },
+
+    "Wilecard area": {
+      states: {
+        Foo: {
+          on: {
+            "*": "Bar",
+          },
+        },
+
+        Bar: {
+          on: {
+            "*": "Foo",
+          },
+        },
+      },
+
+      initial: "Foo",
     },
   },
 }).withConfig({
@@ -181,13 +200,17 @@ export const authenticationMachine = createMachine({
   states: {
     "Checking user permissions level": {
       on: {
-        "Permissions detail received": [{
-          target: "Admin",
-          cond: "User is admin",
-        }, {
-          target: "Normal",
-          cond: "User is normal"
-        }, "No permission"],
+        "Permissions detail received": [
+          {
+            target: "Admin",
+            cond: "User is admin",
+          },
+          {
+            target: "Normal",
+            cond: "User is normal",
+          },
+          "No permission",
+        ],
       },
     },
 

@@ -160,4 +160,27 @@ Microphone: {
 ### run on entry/exit
 
 
+```ts
+Microphone: {
+    states: {
+    Mute: {
+        entry: ["Mute microphone"],
+        on: {
+        Unmute: {
+            target: "Unmuted",
+        },
+        },
+    },
+    Unmuted: {
+        entry: ["Unmute microphone"],
+        on: {
+        Mute: {
+            target: "Mute",
+        },
+        },
+    },
+    },
 
+    initial: "Mute",
+},
+```

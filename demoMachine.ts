@@ -64,7 +64,7 @@ export const walkMachine = createMachine({
 });
 
 export const callMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QGECGAbdACAtqgxgBYCWAdmAHQCyx+ATgPYAOhD51ArgC5gDEAqqRzcwAbQAMAXUSgmDWMS7E2MkAA9EARgBsADgoAmTQHYALKYCcB3eNMGArLt0AaEAE9EB0-YpXx9420dXQBmY1sDAF9I1zRMXAISdhp6ZlZ2QWEeCF4qEQlpJBA5BSUVIo0ETV1TCnFtMIsaoJCHA1cPKvtxCm1vUKaLbWsQ021o2IxsPCIySgA1YggwBgoAZVYAdzIoLAA3JZXeAAlD-cOGAtUSxWVSVUqDMIp7e1HxY1HRgOMOxG6el9jLoDAZ-No+qYJiA4tNEnMKItlqtThAdudkbwNgxNhiVlcijcyvcKp5nq93p9TN9jL93IhvD17NUvK0nvYgmNojEQKQGMt4EVYQlZuRrvJbuVQJUALReP4IOW1cQq1Vq1WaKE84UzJKUFKMFhsMDi0p3B6eUwKhoUNkWExPCymcSaTQhcbaqYivXUWiG9L6kSmyUk6WIYztelVYwWCiaMEqixmEL2mxRT3xXUIg1pY0UTIiCDB4kWhDu2pNEEBbQWcQWEImBXVTS9BOaZktCxWLWTTPw9hIlbF82khDyqPukJxixvePmWwBELQnX9hYXdZbdEHZHDqXqcORzrebSGbTAzRNal6ezp3tw0Vr5EUVFbi670P7suhXxNcI1EJ1hSCr9BQgTnpe7q6De3KREAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QGECGAbdACAtqgxgBYCWAdmAHQCyx+ATgPYAOhD51ArgC5gDEAqqRzcwAbQAMAXUSgmDWMS7E2MkAA9EARgAsADgoBOAwGYDAdmMBWKwb2bjAGhABPRACYLFbeM0HN48VtLXW0AX1CnNExcAhJ2GnpmVnZBYR4IXioRCWkkEDkFJRU8jQR7MwoQ411dN3E67WNtaydXBANLClMjTTdLADYTGuN+8MiMbDwiMkoANWIIMAYKAGVWAHcyKCwANwWl3gAJfd39hhzVAsVlUlVSt1MvC1qQ3TM-A11HF0RLM31dJ8-JZzMF-mYxiAopNYjMKPNFstjhAtqdEbw1gx1milhc8lcircSu5Htpnm5Xu9fF9Wr83AYKOILMYzIMTGYzMFwhEQKQGIt4HloTFpuRLvJrsVQKUALSaXTiCj9Uycyz1cTNJn9WkIGXvChuZp+fraU3GQKWSHCqZxSgJRgsNhgcWFG53RBy4xuJUqyxqhpq1k6-RaowK-p9UyNTRWiYi23UWgO5J2kQuyVE6UekI+0H+jWB3Q6zSDLzWT7VXT+PoGWPRG1w+1JJ0UVIiCDpwnuhDNCoWaz0nQmczfNqafVvMxuNz9Etq81WOsw0VzM6dt3EhB9QwNNyaHSmiO9Sw602aCicjURvSDGe1nnW2HsBFLVYbVF7RHrqXqRCeAy7vupraEeo6-E0lTTh0Iz2ICHRLvGcIvkiCwfmu+ISl2m7VJ0Hy9B0nLaOO2g6tYFRevS1iztURiWtyQA */
   id: "Call machine",
   tsTypes: {} as import("./demoMachine.typegen").Typegen2,
   type: "parallel",
@@ -72,10 +72,11 @@ export const callMachine = createMachine({
     Microphone: {
       states: {
         Mute: {
+          entry: "Mute microphone",
+          exit: "Unmute microphone",
           on: {
             Unmute: {
               target: "Unmuted",
-              actions: "Unmute microphone",
             },
           },
         },
@@ -83,7 +84,6 @@ export const callMachine = createMachine({
           on: {
             Mute: {
               target: "Mute",
-              actions: "Mute microphone",
             },
           },
         },

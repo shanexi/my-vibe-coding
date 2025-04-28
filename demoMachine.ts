@@ -1,7 +1,7 @@
 import { assign, createMachine } from "xstate";
 
 export const dogMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QBED2UB0BBWAbMYADgMQAyqArhAAQByqAlgMZgDaADALqKiGqwMALg1QA7HiAAeiAEwBGdhgCsMgCzqAnAGZ2Adi2qAbKoA0IAJ6JdS3RlVy1MtVsNyNqmQF9PZtJhz4RMQAygC2YLi4sNQAYqioEBzcSCB8AsJiEtIIKmaWCAAcchhaThrsBTa6CroyWt6+6NgA7gCGANZgxDGtkdGteASESRJpQiLiKdnVSiWGMkrs86pFKqYWiHKqGspaewUGqkoFlXKGDSB+LR1gGMGBhOZklDSijCwjKWMZk6DZSoYduwFkZjLoNBoFFo8lZ2MUCoZ9nICrVIQ4LlcsG1OhgAEJgKBQBiiKDEADiDAAbmBqIIAE5gVqCT68fjjTJTRCGJTFdjHAoyQz6QHAwwwnJaAoYGTuBxKLQaQwVRHeHwgN4QOASPyjNk-LKIdb5AC0hgw7AtFtK6iKMn0cgxTQCQ116QmBoQiMUyK0xwVugKisB4oWiiKkvY9klDgWBUd-mxYFd7N+UkN7B2GgOBT59lqSiU4tUFQwKMFHnk3I8qnqasxibuD3yrLdHL+hpsGCzEaUeYWhY2CF0wPNWjkLhkFW2hgKqnj1xxwSYrQZEGT+s5Q4UXYDrkWyO5NnFw52dsVDkhWYFSnnWJueIJRJJ6-dm97YZs8oDxZ0vqLiowNwC1RCFjEMc5VSAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QBED2UB0BBWAbMYADgMQAyqArhAAQByqAlgMZgDaADALqKiGqwMALg1QA7HiAAeiAKwAmADQgAnogBsAZgAsGNQEYAHDK0GA7Ho2mNBtQF9bStJhz4ixAMoBbMLlyxqAGKoqBAc3EggfALCYhLSCPJKqggGehgacnIAnIYyamZZcjIy9o7o2ADuAIYA1mDEAVW+-lV4BIRhElFCIuIR8VqFGFqm8qZq7GZqWWpaWkmIRey6WjJGa+z6WnIZpSBOlbVgGO6uhMpklDSijCydEd0xfaDxcnoyGMVa+QapWuymOTsGQLBDWDQYIEyUyFKF6bKmPYHLDVOoYABCYCgUAYoigxAA4gwAG5gaiCABOYCqgnuvH4PVi-UQZlBclMy2BNkMcx+ejsexuEDgEicXQZTziiAAtFlQdKBWVnG0iOLor0pQhNFkMAZNgCYaY5nptmyZMtUtZ2exgRpNnpEQ59uUUUc1YznlJEBo5SpEIY5BgrHlTH9tGoIxokS7UcdTu1kvT1UyXogsjqOQGDED08Z2aDwekrKNAYD+bsncjYycmFUqRB3ZLmWDoZ8DQZ-nosuZ5n6wVllmpMuw3pMJm9HUrDmjMdjcVBGxrm1kdBo9OuV+mYSN832MjpfloHVprAP4VH7LYgA */
   id: "Dog",
   initial: "Awake",
   tsTypes: {} as import("./demoMachine.typegen").Typegen0,
@@ -220,4 +220,28 @@ export const authenticationMachine = createMachine({
   },
 
   initial: "Checking user permissions level",
+});
+
+export const fooMachine = createMachine({
+  /** @xstate-layout N4IgpgJg5mDOIC5QDED2qCyBDAxgCwEsA7MAOhIHcACWAFy1rCoEYBiZAeQ4G0AGAXUSgADqlgFaBVESEgAHomYB2JaQDMANg1rezABybmAVl569AGhABPRUrWl9AFj13jRgEwq9jgL4-LaJi4hCTkYNR0DEzurABCAIIASnyCSCCi4pLSsgoITqR67kZGjgCcagalHpY2CHq8pM5VesruekZKzI5GfgHo2PjEYHFJKbIZElIyabmO7jWIRQ1Kni5tnp68vr0gRKgQcLKBAyFg42KT2TOIALQaCwg3RqSlr6VmGu+6vJ3MO8fBIZhCL0Rgsc6ZKY5RBzB56DSkdxqUpdTqlDTwkruf79QGhSg0UHRCGXaagXJqZgI7S8IzMIro+oqB5VUgdZgVCrMdFaT5+PxAA */
+  id: "FooMachine",
+
+  states: {
+    "new state 1": {
+      on: {
+        FOO: "new state 2"
+      }
+    },
+    "new state 2": {
+      on: {
+        BAR: "new state 1"
+      }
+    }
+  },
+
+  initial: "new state 1",
+
+  on: {
+    BAR: ".new state 2"
+  }
 });

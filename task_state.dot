@@ -1,16 +1,24 @@
-digraph TaskStateMachine {
-    // 设置图形属性
-    rankdir=LR;  // 从左到右的布局
-    node [shape = circle, style = filled];
+digraph VocabularyBot {
+    rankdir=LR;
+    node [shape=ellipse, fontname="Microsoft YaHei"];
     
-    // 定义节点（状态）
-    IDLE [fillcolor = lightblue];
-    IN_PROGRESS [fillcolor = yellow];
-    COMPLETED [fillcolor = lightgreen];
+    初始界面 [label="初始界面\n(招呼语)"];
+    学习模式 [label="学习模式"];
+    考试模式 [label="考试模式"];
     
-    // 定义转换（边）
-    IDLE -> IN_PROGRESS [label = "start"];
-    IN_PROGRESS -> COMPLETED [label = "finish"];
-    IN_PROGRESS -> IDLE [label = "cancel"];
-    COMPLETED -> IDLE [label = "reset"];
-} 
+    初始界面 -> 学习模式 [label="选择学习模式"];
+    初始界面 -> 考试模式 [label="选择考试模式"];
+    
+    学习模式 -> 学习模式 [label="答对 → 下一题"];
+    学习模式 -> 学习模式 [label="跳过 → 下一题"];
+    学习模式 -> 学习模式 [label="答错且未重新作答 → 下一题"];
+    学习模式 -> 学习模式 [label="答错且选择重新作答 → 留在当前题"];
+    
+    考试模式 -> 考试模式 [label="答题 → 提供反馈 → 下一题\n(无跳过/重新作答)"];
+    
+    学习模式 -> 考试模式 [label="切换至考试模式\n(当前题完成后生效)"];
+    考试模式 -> 学习模式 [label="切换至学习模式\n(当前题完成后生效)"];
+    
+    学习模式 -> 初始界面 [label="返回主菜单\n(当前题完成后生效)"];
+    考试模式 -> 初始界面 [label="返回主菜单\n(当前题完成后生效)"];
+}

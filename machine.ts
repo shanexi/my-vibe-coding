@@ -3,34 +3,34 @@ import { createMachine, assign } from 'xstate';
 // Define placeholder types and utility functions first
 // You'll need to replace these with your actual data structures and logic
 
-// Represents a vocabulary word
+// 表示一个词汇条目
 type Word = {
   id: string;
   japanese: string;
   chinese: string;
 };
 
-// The machine's context (extended state)
+// 状态机的上下文（扩展状态）
 type VocabularyContext = {
-  currentWord: Word | null;
-  options: string[]; // Array of potential Chinese translations (including correct one)
-  feedback: string | null; // Message to show the user (e.g., feedback, instructions)
-  errorCount: number; // Example: Track errors in a session
-  // Flag to handle transitions that should happen after the current question cycle
-  pendingTransitionTarget: 'idle' | 'learning' | 'testing' | null;
+  currentWord: Word | null;  // 当前展示的词
+  options: string[];        // 当前词的选项列表（包含正确答案和干扰项）
+  feedback: string | null;  // 用户反馈信息
+  errorCount: number;       // 错误计数
+  // 标记需要在当前题目完成后切换到的目标状态
+  pendingTransitionTarget: '初始界面' | '学习模式' | '考试模式' | null;
 };
 
-// All possible events the machine can react to
+// 所有可能的事件类型
 type VocabularyEvent =
-  | { type: 'START_LEARNING' }
-  | { type: 'START_TESTING' }
-  | { type: 'ANSWER'; answer: string } // User provides the chosen Chinese translation
-  | { type: 'SKIP' } // Specific to learning mode
-  | { type: 'RETRY_INCORRECT' } // Specific to learning mode after incorrect answer
-  | { type: 'NEXT_QUESTION' } // Event to move forward after incorrect feedback in learning mode
-  | { type: 'SWITCH_TO_LEARNING' }
-  | { type: 'SWITCH_TO_TESTING' }
-  | { type: 'RETURN_TO_MENU' };
+  | { type: '开始学习' }
+  | { type: '开始考试' }
+  | { type: '回答问题'; answer: string }  // 用户选择的答案
+  | { type: '跳过' }                      // 仅限学习模式
+  | { type: '重新作答' }                  // 仅限学习模式下答错后
+  | { type: '下一题' }                    // 学习模式下答错后继续
+  | { type: '切换到学习模式' }
+  | { type: '切换到考试模式' }
+  | { type: '返回主菜单' };
 
 // --- Placeholder Implementations (Replace with your actual logic) ---
 
@@ -66,7 +66,7 @@ function generateOptions(word: Word | null): string[] {
 }
 
 // Function to check if the answer is correct
-function checkAnswer(context: VocabularyContext, event: Extract<VocabularyEvent, { type: 'ANSWER' }>): boolean {
+function checkAnswer(context: VocabularyContext, event: Extract<VocabularyEvent, { type: '回答问题' }>): boolean {
   return event.answer === context.currentWord?.chinese;
 }
 
@@ -74,164 +74,132 @@ function checkAnswer(context: VocabularyContext, event: Extract<VocabularyEvent,
 
 export const vocabularyMachine = createMachine<VocabularyContext, VocabularyEvent>(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QDcD2BjAhgIwK4BtMAnATwCFUAXAOgEsJ8wBiAZQBUBBAJTYH0AZAKLcAcgEkRAcQDaABgC6iUAAdUsWpVqoAdkpAAPRACYAjAFZqATgAsZgMwnZRy+aN3LAGhAlEANgAc-tR2RrKylrJ2TrLWRkYAvvFeaFh4hKQUNPSMrJw8vGyC7BIyCnqq6po6eoYIcRY29o7Oru5ePnW+ltSRAOyOvXa9lr7W5onJGDgExORU1IzE2rTaUNSwABaoAO4rUACKuHBV2kwcIiwA6oJccopIIBUaWroPtb1GvtQmw769gWYYpZemZ2oh-E4eoMzDDYb1RgkkiAUtN0nMaIsiMtVustrtVodji8zhdrrcTPcVGpntU3n4AtQYUZrCFnGYTNZwmCECYTHYLIMTEYYRFZGZrCyJsipmlZpkFmAlntcTs9oTYCdWABpMQABTu5WpJxqiA+Xx+I3+-kB1mBoO8fn51ACNlsJgiZmBvSlKNlGXmmOxa02qoJRw1xKuYjYAGEABIFADyBSKbBKBoeT2NdIQtl61HhPz5Zg+5kG3JsX38HNMnt8bhG1h9Mpm-oxiqxypD+IO4c1XEEbAAqlwREneABZQQiIcZqmVF4m3MMoz+YW21d84EjbnWkyM9zWNdWmymZupVvohVKnHdtV9yOXaPx8dCUTpsqZo2LnPWetWIZbWsQZLH8D1uRBL5PmA21fHMI9-HPVE5QDDsgxVHsADEwEgbBMHQABrJg50eb9aVAWohT+AtInCBxLBGatel3SJGV6WIxUsIZhjMRCkV9S95UDLs8T2MRtHQVAiCIMB0EobDcPwoiBzYLgAE1eAkGNEy4AcYzYEisx-CjwTCAD-H+fpPSiOx-G5RxAWdExfEBRpLBhPkkL9K9hNvUTVnEyTpNk+ScIgPDCKYERBAADT4fYh1TMRExEQyyNeEyeU+fNelorj3UYn57OaKwONXDjwgsrzBNQm9g38qBAqkmS5IU8KlNYJ9YwTNhk0KYopDShdyIMRBHB+KxcqcUZenhDyK2GagOI8v81zFaq0SEtCRNDRqJOakK2oi5TBxHMdesnadZ0-ecaQy0aeScIJbVkfx6xMN6wN43d-Gsb5bGrNcbBBV6NpQ9s6uoZQiAwOB1FWYibtI4b7tqWIjALOD+n5UsSzsezax6GsXHMCJrV8MG22vTscWh2HYHhqBiIpQ0UaXZzHL+D63HK1cYggj5qH8IZfDgly+g+SmfO22mYfQOG9mIoxKWRu72eymionyhiAiKh1cxsIWYgCWR3Wc02zAp-iW02+ZKCJPzdvVTVziuG4hrVnNTHY744MPTk+b5blRj+0w-0iYFnOhKX5XtiNHZ7Z3H2fHrkzfUcPxVoyRsoywjHzEVhZhGJ7F8bkzHzg8hTsGyGPcq3JgvW2aDjzQE-vIkdCYFSzvHKcZw97NMvdWJvg+VanCGQ9uRZDHhVGBi3pcsYzBju2Hfqp2Hy7qNuvHfq00GpHs9RsbT0ZUCwNm5eRntDoa6+UCflFroogsuw15bjeML2I6OsH4yD1hS-WCFEZedhbCi3xvrUWz13BvQ5L4C2b1P7UFbsqOm8sGaKwATnYwwpSpNCcC4CutkCZBFaLEWyshRjij4o3ZCVN0Gy3pozZmWd0pLnRpjIsONazln1sWCwYEPRwV4q9cY1sm7gzQd-TBCsEbSGVqzT2mVgF-RrjQ8UEDLa+GgR0QEdhgjOGFlfbK7FEhIm0KgCAcA9ACWbiooeD0AC0Zd9ZuJ6GEJ69gJTuXzpIhh3l5TZDAE4wBaMjD2UcsBTRSDCyWw-lIxh0s6rhLwbmcIPDsYln4foxAnJ8xHmcsLdiS9LCoN8pvRO297ony4W9JanJHB2DgnnRJ9kYj5lemBW0xZrSREqTLapv8wrHXSafR6r1nSl1CDXT0DEBZBDXLrH4s0QjASGZDO8AV9rBVamMpSEz2ZhC+DfYUkR3ABGYoI2Qi0ugV1+qMDmXEtk0zWPI7Bqxjk5g5NWb4+cRQ41+h9CCDEhbtNFs5JBsRV7JOCeveOUAfnDwst0Qu-IbSl25MyboLlAheltPyMUSSgk1S-kin+YZO51M4b8kYshQFhDiK00ms1g6VwhHWd6EDbT0OlNIph38dlQD-oRFFQD4HGPgmUj4rT8kIFFvmAYFphYQJiE2eF5LZGUs+YzCVtR84WQLB5UIhi1z8mDnBRkwpeLOAuePSx8QgA */
-    id: 'vocabularyBot',
-    initial: 'idle',
-    // Define initial context structure
+    /** @xstate-layout N4IgpgJg5mDOIC5SFnow4jaDNtQBnKC5zQFmqC65AOkFwlQac1AZV0CN0gYkAB9UrAbQAYBdRUABwHtYBLAC59uAOw4gAHogBMARgCshAJwAWeQGZZADg2b1zeQHYANCACeiAGxathddOYHm6wypWGt0gL5fTaLHhEZFR0pIDAAYCr0SzsSCA8-EKi4lII0tKKqhraurL6RqYWqZZKhM6GzJ5K+kqy7j5+GDgEhFiAhFaA8PqEgKo6gFyegBkZgHdu1IB7aoAq3oB3qX3R4vGCwmKxKZYqloTymYZG0uoqOwWIWiqyhFrl6lValusVsvUg-k1EbZ29gyMTU7IxXLxzSYtWWTHIzWZiyZgqaRKeQKfYIIGOQhuWRKSzMVHOKFKO4PQItTAdbr9IaAZ9jAOPx01is0SC1ASyBa0MoPBkOhsPMVnUimsqjk6y06nO8hxjTxzyJb0A4EqAI2NAAxKkQ6lJ+CXmyUQR2YhGkllk5WcOgUlnScNUqy0tV1siNhlc0i0IoCzXFryGgBX44aAbjlADvBgFVlJVxX40tUIDVanV69QG+RG+Rwg1rc7ItHbFEOx74wku6gy2XPf3U1UAkO1QhM9TLGFHQzl6RwzarbXuIEgrRstNigmdQB8Zj1AMbWgDsPQCzyoAIzOo+cDhbpiHB8mkWpUFUsTJWMLScecjKrup1s4q7adncIPcAmKmAe+iR9RALOJgAbTQA68qNxyr-lOEIZ0nYakpmOl5FXLnCZ01HVlkhdFlkuQx9yeQ8T3PUdAGg5QAAOSmNgZgnZ9JGnAw52kBcIOWK5ZDXDl4XBOdVBRNEMXsJRsV8e5RQPQlYIvHMFXaR8-lpTCEEuFQ7FqSEl2KNwdBNQwSlAlRaKIwUmTohpHWg5iejPC93W9P1UKpdDuJSPiBLcbV5NE2MSJsfjahBL8lAkjQoIzTpABBNQAwFyQwBTazHbTlS44MXEUbVdUcSMYWjY0SKIhRSlqOQrS5co0gc8VXI8scvjQp89OnSNbHLQwFEuXVzR1Os3xOFxwybL9tCSw8UsQzzGGkb4A0y4MZxwvDhJXIjaxI6T+K0CErk8GwKhhBz2IlIYxkmTigyLbQKjWbZdmRHZXBMEiQK1Ky9UhfLo0miJM2JbM5TzbzWt8xbLBcLUKkFfzowklQ4VnQwEyIiFtCraFjtOt4NN9ebJx4uLPocAU5PkF7VDhXYcOjdwjnkU5YcsAGXjOtiTo4q6CwwlIrSOUsyI8Vd0iqOFBVWJRzVcI4ns0VwsaPHoL1BomZGYVxypRBmVGKt7tusJFzlG1FcJWbx6NxZopvqxqCd04M0gyNRNB0QVcmYSwALtQgFBTKW9eTYU5cYohFbchq0pawmsoQfywyC-VQpjACuUUVtW1cTJoWsNmlbHZqMpul8HD5gUBd1IWSfejcaKGpd7BWIifHokRuAgOBxHl-Bw4Wl8AFp9ZIkuMlo6ua+rowHOCSgi7BlJIQA+RNXcexPCXfKlyF2qOmb7nnaNV2IyjT3+t5pFBaZp7dUH7HBmHp2jlWNwrhqNxXBscvChZT6KlbMErk0SxiiX9mBxHVfg0OT6zkXWGwQkpRStsHuPAvhFQqvljhx3yLA-Uszhn4d11LRACvMSjFFnFCWoY09yWyUo5QgSsgEvl6vxCq+g7S7A7loOstEThKHSOiZEb4VBY0weDNGJQoZPU2HDEWhRcKwLRpUWyOgPD2DZi6WhxNljqA-PYXC5ohpAi2oUa0JwDBVFAtRahKD0xTR7LfHSbVFoYhOEccE1gO7gT6jIpcRteYKFsucIis5g623coImQ2w6b9ytJkCx+8rA6hWrDdI5QPColuJnIAA */
+    id: '词汇学习机器人',
+    initial: '初始界面',
     context: {
       currentWord: null,
       options: [],
-      feedback: 'Loading...', // Initial message
+      feedback: '加载中...', 
       errorCount: 0,
       pendingTransitionTarget: null,
     },
-    // Set the actual initial context values
-    entry: 'assignInitialContext',
+    entry: '初始化上下文',
     states: {
-      idle: {
-        entry: assign({ feedback: 'Welcome! Choose a mode.' }),
+      初始界面: {
+        entry: assign({ feedback: '欢迎！请选择模式：学习模式或考试模式' }),
         on: {
-          // Transitions to start modes, loading the first question
-          START_LEARNING: { target: 'learning', actions: ['loadFirstQuestion', 'clearPendingTransition'] },
-          START_TESTING: { target: 'testing', actions: ['loadFirstQuestion', 'clearPendingTransition'] },
+          开始学习: { target: '学习模式', actions: ['加载首题', '清除待切换标记'] },
+          开始考试: { target: '考试模式', actions: ['加载首题', '清除待切换标记'] },
         },
       },
-      learning: {
-        initial: 'showingQuestion',
+      学习模式: {
+        initial: '展示题目',
         states: {
-          // State where the user sees the question and options
-          showingQuestion: {
-            entry: assign({ feedback: null }), // Clear feedback for new question
+          展示题目: {
+            entry: assign({ feedback: null }), 
             on: {
-              ANSWER: [
-                // If correct, go show feedback
-                { cond: 'isAnswerCorrect', target: 'showingFeedback' },
-                // If incorrect, go show specific incorrect feedback state
-                { target: 'showingIncorrectFeedback' },
+              回答问题: [
+                { cond: '答案正确', target: '显示正确反馈' },
+                { target: '显示错误反馈' },
               ],
-              // Skip goes directly to processing the next step
-              SKIP: { target: 'processing', actions: 'setSkippedFeedback' },
-              // Mode switch/return events just set a flag, handled in 'processing' state
-              SWITCH_TO_TESTING: { actions: 'setPendingTransitionTesting' },
-              RETURN_TO_MENU: { actions: 'setPendingTransitionIdle' },
-              // Ignore requests to switch to the current mode
-              SWITCH_TO_LEARNING: { actions: 'clearPendingTransition' },
+              跳过: { target: '处理下一步', actions: '设置跳过反馈' },
+              切换到考试模式: { actions: '设置待切换到考试' },
+              返回主菜单: { actions: '设置待返回主菜单' },
+              切换到学习模式: { actions: '清除待切换标记' },
             },
           },
-          // State after a correct answer or skip
-          showingFeedback: {
-             entry: 'setCorrectFeedback', // Set feedback message
-             always: 'processing', // Immediately move to process the next step
+          显示正确反馈: {
+             entry: '设置正确反馈',
+             always: '处理下一步',
           },
-          // State after an incorrect answer, allowing retry
-          showingIncorrectFeedback: {
-            entry: 'setIncorrectFeedback', // Set feedback, potentially offer retry
+          显示错误反馈: {
+            entry: '设置错误反馈',
             on: {
-              // Go back to the *same* question without loading a new one
-              RETRY_INCORRECT: 'showingQuestion',
-              // User chooses to move on after seeing incorrect feedback
-              NEXT_QUESTION: 'processing',
-              // Still allow setting transition intent while viewing feedback
-              SWITCH_TO_TESTING: { actions: 'setPendingTransitionTesting' },
-              RETURN_TO_MENU: { actions: 'setPendingTransitionIdle' },
+              重新作答: '展示题目',
+              下一题: '处理下一步',
+              切换到考试模式: { actions: '设置待切换到考试' },
+              返回主菜单: { actions: '设置待返回主菜单' },
             }
           },
-          // Transient state to check for pending mode switches or load the next question
-          processing: {
+          处理下一步: {
               always: [
-                // Prioritize pending transitions
-                { target: '#vocabularyBot.idle', cond: 'shouldGoToIdle', actions: 'prepareTransition' },
-                { target: '#vocabularyBot.testing', cond: 'shouldGoToTesting', actions: 'prepareTransition' },
-                // Otherwise, stay in learning mode and load the next question
-                { target: 'showingQuestion', actions: 'prepareNextQuestion' }
+                { target: '#词汇学习机器人.初始界面', cond: '应该返回主菜单', actions: '准备状态切换' },
+                { target: '#词汇学习机器人.考试模式', cond: '应该切换到考试', actions: '准备状态切换' },
+                { target: '展示题目', actions: '准备下一题' }
               ]
           }
         }
       },
-      testing: {
-        initial: 'showingQuestion',
+      考试模式: {
+        initial: '展示题目',
          states: {
-           // State where user sees the question and options in test mode
-           showingQuestion: {
-             entry: assign({ feedback: null }), // Clear feedback
+           展示题目: {
+             entry: assign({ feedback: null }),
              on: {
-               // Provide feedback immediately after answer
-               ANSWER: { target: 'showingFeedback', actions: 'prepareAnswerFeedback' },
-               // Mode switch/return just set flags
-               SWITCH_TO_LEARNING: { actions: 'setPendingTransitionLearning' },
-               RETURN_TO_MENU: { actions: 'setPendingTransitionIdle' },
-               // Ignore requests to switch to the current mode
-               SWITCH_TO_TESTING: { actions: 'clearPendingTransition' },
+               回答问题: { target: '显示反馈', actions: '准备答案反馈' },
+               切换到学习模式: { actions: '设置待切换到学习' },
+               返回主菜单: { actions: '设置待返回主菜单' },
+               切换到考试模式: { actions: '清除待切换标记' },
              },
            },
-           // State after showing feedback in test mode
-           showingFeedback: {
-             always: 'processing', // Immediately move to process next step
+           显示反馈: {
+             always: '处理下一步',
            },
-           // Transient state for processing next step in testing mode
-           processing: {
+           处理下一步: {
               always: [
-                // Prioritize pending transitions
-                { target: '#vocabularyBot.idle', cond: 'shouldGoToIdle', actions: 'prepareTransition' },
-                { target: '#vocabularyBot.learning', cond: 'shouldGoToLearning', actions: 'prepareTransition' },
-                // Otherwise, stay in testing mode and load next question
-                { target: 'showingQuestion', actions: 'prepareNextQuestion' }
+                { target: '#词汇学习机器人.初始界面', cond: '应该返回主菜单', actions: '准备状态切换' },
+                { target: '#词汇学习机器人.学习模式', cond: '应该切换到学习', actions: '准备状态切换' },
+                { target: '展示题目', actions: '准备下一题' }
               ]
            }
          }
       },
     },
   },
-  // --- Action and Guard Implementations ---
   {
     actions: {
-      assignInitialContext: assign((_) => ({
+      初始化上下文: assign((_) => ({
         currentWord: null,
         options: [],
-        feedback: 'Welcome! Choose a mode.',
+        feedback: '欢迎！请选择模式。',
         errorCount: 0,
         pendingTransitionTarget: null,
       })),
-      // Loads the very first question when entering a mode
-      loadFirstQuestion: assign((context) => {
-        const nextWord = getNextWord(context); // Get initial word
+      加载首题: assign((context) => {
+        const nextWord = getNextWord(context);
         const options = generateOptions(nextWord);
         return {
           currentWord: nextWord,
           options: options,
-          feedback: null, // Clear welcome message
-          pendingTransitionTarget: null, // Ensure flag is clear
+          feedback: null,
+          pendingTransitionTarget: null,
         };
       }),
-      // Prepares context for the *next* question within the *same* mode
-      prepareNextQuestion: assign((context) => {
+      准备下一题: assign((context) => {
           const nextWord = getNextWord(context);
           const options = generateOptions(nextWord);
           return {
-            ...context, // Keep existing context like errorCount
+            ...context,
             currentWord: nextWord,
             options: options,
-            feedback: null, // Clear feedback for new question
-            pendingTransitionTarget: null // Ensure flag is clear
+            feedback: null,
+            pendingTransitionTarget: null
           };
       }),
-       // Prepares context for transitioning to a *different* mode (or idle)
-      prepareTransition: assign((context) => {
+      准备状态切换: assign((context) => {
           const target = context.pendingTransitionTarget;
-          const isGoingToIdle = target === 'idle';
+          const isGoingToIdle = target === '初始界面';
 
           let nextWord = context.currentWord;
           let options = context.options;
-          let feedback: string | null = null; // Default to null feedback
+          let feedback: string | null = null;
 
           if (isGoingToIdle) {
-              // Clear data for idle state
               nextWord = null;
               options = [];
-              // Feedback will be set by idle state's entry action
           } else {
-              // Load data for the target mode (learning/testing)
-              nextWord = getNextWord(context); // Or get specific first word for the mode?
+              nextWord = getNextWord(context);
               options = generateOptions(nextWord);
           }
 
@@ -240,46 +208,39 @@ export const vocabularyMachine = createMachine<VocabularyContext, VocabularyEven
               currentWord: nextWord,
               options: options,
               feedback: feedback,
-              pendingTransitionTarget: null // Crucial: Clear the flag after processing
+              pendingTransitionTarget: null
           };
       }),
-      setCorrectFeedback: assign({ feedback: 'Correct!' }),
-      // Provides feedback and potentially hint/correct answer for incorrect guesses
-      setIncorrectFeedback: assign({
-          feedback: (context) => `Incorrect. The correct answer was: ${context.currentWord?.chinese}. Choose RETRY or NEXT.`,
-          errorCount: (context) => context.errorCount + 1 // Increment error count
+      设置正确反馈: assign({ feedback: '回答正确！' }),
+      设置错误反馈: assign({
+          feedback: (context) => `回答错误。正确答案是：${context.currentWord?.chinese}。\n你可以选择重新作答，或者点击下一题继续。`,
+          errorCount: (context) => context.errorCount + 1
       }),
-      setSkippedFeedback: assign({ feedback: 'Skipped.' }),
-       // Sets feedback based on answer correctness in testing mode
-      prepareAnswerFeedback: assign((context, event) => {
-        if (event.type !== 'ANSWER') return {}; // Should not happen
+      设置跳过反馈: assign({ feedback: '已跳过。' }),
+      准备答案反馈: assign((context, event) => {
+        if (event.type !== '回答问题') return {};
         if (checkAnswer(context, event)) {
-          return { feedback: 'Correct!' };
+          return { feedback: '回答正确！' };
         } else {
           return {
-              feedback: `Incorrect. The correct answer was: ${context.currentWord?.chinese}.`,
-              errorCount: context.errorCount + 1 // Increment errors in test mode too
+              feedback: `回答错误。正确答案是：${context.currentWord?.chinese}。`,
+              errorCount: context.errorCount + 1
           };
         }
       }),
-      // Actions to set the pending transition target flag
-      setPendingTransitionIdle: assign({ pendingTransitionTarget: 'idle' as const }),
-      setPendingTransitionLearning: assign({ pendingTransitionTarget: 'learning' as const }),
-      setPendingTransitionTesting: assign({ pendingTransitionTarget: 'testing' as const }),
-      // Action to clear the flag (e.g., if user cancels switch or switches to current mode)
-      clearPendingTransition: assign({ pendingTransitionTarget: null }),
+      设置待返回主菜单: assign({ pendingTransitionTarget: '初始界面' as const }),
+      设置待切换到学习: assign({ pendingTransitionTarget: '学习模式' as const }),
+      设置待切换到考试: assign({ pendingTransitionTarget: '考试模式' as const }),
+      清除待切换标记: assign({ pendingTransitionTarget: null }),
     },
     guards: {
-      // Checks if the provided answer is correct
-      isAnswerCorrect: (context, event) => {
-        // Type guard needed because this can be called from non-ANSWER events in some logic flows
-        if (event.type !== 'ANSWER') return false;
+      答案正确: (context, event) => {
+        if (event.type !== '回答问题') return false;
         return checkAnswer(context, event);
       },
-      // Guards to check the pending transition target flag
-      shouldGoToIdle: (context) => context.pendingTransitionTarget === 'idle',
-      shouldGoToLearning: (context) => context.pendingTransitionTarget === 'learning',
-      shouldGoToTesting: (context) => context.pendingTransitionTarget === 'testing',
+      应该返回主菜单: (context) => context.pendingTransitionTarget === '初始界面',
+      应该切换到学习: (context) => context.pendingTransitionTarget === '学习模式',
+      应该切换到考试: (context) => context.pendingTransitionTarget === '考试模式',
     },
   }
 );

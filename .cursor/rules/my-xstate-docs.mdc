@@ -184,3 +184,20 @@ Microphone: {
     initial: "Mute",
 },
 ```
+
+## state api
+
+目前应该用不到。
+
+- `matches`
+- `can`
+
+## state properties
+
+不能在可视化显示，先不用
+
+- `tags`
+
+## Trasient state node
+
+todo // after context

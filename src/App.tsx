@@ -1,19 +1,8 @@
 import { useMachine } from "@xstate/react";
-import { callMachine } from "../demoMachine";
-import { useEffect } from "react";
-
-function consoleLogTransition() {
-  const newState = callMachine.transition(callMachine.initialState, {
-    type: "Unmute",
-  });
-  console.log(newState.value, newState.context, newState.actions);
-}
+import { counter } from "../demoMachine";
 
 function App() {
-  const [state, send] = useMachine(callMachine);
-  useEffect(() => {
-    consoleLogTransition();
-  }, []);
+  const [state, send] = useMachine(counter);
   return (
     <>
       <div className="card">

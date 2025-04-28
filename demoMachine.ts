@@ -1,4 +1,4 @@
-import { createMachine } from "xstate";
+import { assign, createMachine } from "xstate";
 
 export const dogMachine = createMachine({
   /** @xstate-layout N4IgpgJg5mDOIC5QBED2UB0BBWAbMYADgMQAyqArhAAQByqAlgMZgDaADALqKiGqwMALg1QA7HiAAeiAEwBGdhgCsMgCzqAnAGZ2Adi2qAbKoA0IAJ6JdS3RlVy1MtVsNyNqmQF9PZtJhz4RMQAygC2YLi4sNQAYqioEBzcSCB8AsJiEtIIKmaWCAAcchhaThrsBTa6CroyWt6+6NgA7gCGANZgxDGtkdGteASESRJpQiLiKdnVSiWGMkrs86pFKqYWiHKqGspaewUGqkoFlXKGDSB+LR1gGMGBhOZklDSijCwjKWMZk6DZSoYduwFkZjLoNBoFFo8lZ2MUCoZ9nICrVIQ4LlcsG1OhgAEJgKBQBiiKDEADiDAAbmBqIIAE5gVqCT68fjjTJTRCGJTFdjHAoyQz6QHAwwwnJaAoYGTuBxKLQaQwVRHeHwgN4QOASPyjNk-LKIdb5AC0hgw7AtFtK6iKMn0cgxTQCQ116QmBoQiMUyK0xwVugKisB4oWiiKkvY9klDgWBUd-mxYFd7N+UkN7B2GgOBT59lqSiU4tUFQwKMFHnk3I8qnqasxibuD3yrLdHL+hpsGCzEaUeYWhY2CF0wPNWjkLhkFW2hgKqnj1xxwSYrQZEGT+s5Q4UXYDrkWyO5NnFw52dsVDkhWYFSnnWJueIJRJJ6-dm97YZs8oDxZ0vqLiowNwC1RCFjEMc5VSAA */
@@ -117,5 +117,40 @@ export const callMachine = createMachine({
     "Unmute microphone": () => {
       alert("Microphone is unmuted");
     },
+  },
+});
+
+export const counter = createMachine({
+  /** @xstate-layout N4IgpgJg5mDOIC5QBUD2UoBswDoDyAdgMRobYDaADALqKgAOqsAlgC7OoF0gAeiAjAGZKOAGwBWAByTRogJwAmUQBZKlcQBoQATwEB2UTnFyDewYLknlc5eIC+draSy48AMzcl0LqrSQhGFnZObj4EIREJaVlFFTVNHURJfhxBBQVYyj1+PVs5SQdHEAJUCDhuZ2xuQLYOLn8wgFpRLV0EZocnb2x8eoYmWpCGxGUFVoFKORw9E35KUVzBcVHlPU6QStcPaoHgvt5EJUkxcUE9Sn4Y5VFBZUFx8P4FHAzs+cXlhVXCuyA */
+  tsTypes: {} as import("./demoMachine.typegen").Typegen3,
+  id: "Toggle",
+  context: {
+    count: 0,
+  },
+  states: {
+    On: {
+      on: {
+        Toggle: {
+          target: "Off",
+          actions: "increment",
+        },
+      },
+    },
+    Off: {
+      on: {
+        Toggle: {
+          target: "On",
+          actions: "increment",
+        },
+      },
+    },
+  },
+
+  initial: "On",
+}).withConfig({
+  actions: {
+    increment: assign({
+      count: (context) => context.count + 1,
+    }),
   },
 });

@@ -92,4 +92,34 @@ export interface Typegen2 {
 "Video"?: "Hiding video" | "Showing video"; };
         tags: never;
       }
+
+export interface Typegen3 {
+        '@@xstate/typegen': true;
+        internalEvents: {
+          "xstate.init": { type: "xstate.init" };
+        };
+        invokeSrcNameMap: {
+          
+        };
+        missingImplementations: {
+          actions: "increment";
+          delays: never;
+          guards: never;
+          services: never;
+        };
+        eventsCausingActions: {
+          "increment": "Toggle";
+        };
+        eventsCausingDelays: {
+          
+        };
+        eventsCausingGuards: {
+          
+        };
+        eventsCausingServices: {
+          
+        };
+        matchesStates: "Off" | "On";
+        tags: never;
+      }
   

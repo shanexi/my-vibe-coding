@@ -1,0 +1,16 @@
+digraph TaskStateMachine {
+    // 设置图形属性
+    rankdir=LR;  // 从左到右的布局
+    node [shape = circle, style = filled];
+    
+    // 定义节点（状态）
+    IDLE [fillcolor = lightblue];
+    IN_PROGRESS [fillcolor = yellow];
+    COMPLETED [fillcolor = lightgreen];
+    
+    // 定义转换（边）
+    IDLE -> IN_PROGRESS [label = "start"];
+    IN_PROGRESS -> COMPLETED [label = "finish"];
+    IN_PROGRESS -> IDLE [label = "cancel"];
+    COMPLETED -> IDLE [label = "reset"];
+} 

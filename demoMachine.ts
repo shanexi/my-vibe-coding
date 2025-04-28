@@ -121,7 +121,7 @@ export const callMachine = createMachine({
 });
 
 export const counter = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QBUD2UoBswGIDaADALqKgAOqsAlgC5WoB2pIAHogLQBMBAdACwBGAOwBOAGwAOIQFYANCACeiCQGYeQvgQkSCKztILSVMgL4n5aDNh4B5BjktYwhEkhAVqdRszYIB0gX4xMX8ZAhCJMSN5JQROFWkefQCxITECPj4hKT4zC3QnWwAzIocC7BdmD1p6Jjdff0C+YNCDCKiVGMQBFREeER0+aWbpMRUxjLNzEAZUCDhmR2wqyhrveo5JfmFxKTlFTZ4CAhEBAXENEWbOPgk8kCWwWzryVa8X1kQxTh4dIU4JCkhD0QV0-FshtdBJxviozndpo9ikUVp5aj5EAC+s0Tli+JwBBI+J0Dn4hLwRMMQrtggEBLlEeUngARKiwACGACNsBBUWsPg1RkEQtIwu1oqSJE0RFodHoDEZTFMgA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QBUD2UoBswDoCiAdgIYBG2EAxANoAMAuoqAA6qwCWALm6gYyAB6IAtAEYRAZhwBWGgDYpADgAsAJgCcy2eNUAaEAE9ENHAtkrTC0wHYVMjQpEBfR3rQZs+YmUg4A8gQo3LDBaBiQQFnYuHj5DBBEFKRw1NRpLGnFbGilxKyk9QXiFSXlLKREzcRzy2WdXdGDPUnI-ADNWwIbsUL5Izm5ecMKhFWzkjXNZJVkrLRoaKz04lXEFHDEFDPEUlbUlKyc6kAJUCDg+IOxe1n6YoeFxGhFxhUnp2ceFpeERBeTi2QiJQOTLmFRKI6XXCEZqQa5RAZ8Ya2SQpV6md5zL4GRAaHCyGYpYEqWzmcqQrrQrwtfzw26DUCFGjfBCjNarbRSRRWBRWVKzCnuKmwiBtVp06IMgRGFmZYzAmjTFYWFQScSCxoAETYsBFEsR93iUlkOBoanEElUq3UT3ELJGxgJcg0aSsNnNimcziAA */
   tsTypes: {} as import("./demoMachine.typegen").Typegen3,
 
   id: "Toggle",
@@ -130,34 +130,39 @@ export const counter = createMachine({
     count: 0,
   },
 
+  initial: "Enabled",
+
   states: {
-    On: {
-      on: {
-        Toggle: {
-          target: "Off",
-          actions: "increment",
+    Enabled: {
+      initial: "On",
+
+      states: {
+        On: {
+          on: {
+            Toggle: {
+              target: "#Toggle.Enabled.Off",
+              actions: "increment",
+            },
+          },
+        },
+
+        Off: {
+          on: {
+            Toggle: {
+              target: "#Toggle.Enabled.On",
+              actions: "increment",
+            },
+          },
         },
       },
-    },
 
-    Off: {
-      on: {
-        Toggle: {
-          target: "On",
-          actions: "increment",
-        },
-      },
+      always: {
+        target: "Disabled",
+        cond: "count > 5",
+      }
     },
-
     Disabled: {},
-  },
-
-  initial: "On",
-
-  always: {
-    target: ".Disabled",
-    cond: "count > 5",
-  },
+  }
 }).withConfig({
   guards: {
     "count > 5": (context) => context.count > 5,

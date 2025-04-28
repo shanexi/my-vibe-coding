@@ -120,7 +120,7 @@ export interface Typegen3 {
         eventsCausingServices: {
           
         };
-        matchesStates: "Disabled" | "Off" | "On";
+        matchesStates: "Disabled" | "Enabled" | "Enabled.Off" | "Enabled.On" | { "Enabled"?: "Off" | "On"; };
         tags: never;
       }
   

@@ -1,11 +1,19 @@
-import { createMachine } from "xstate";
+import { createMachine, assign } from "xstate";
 
 export const vocabularyMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5SFnow4jaDNtQBnKC5zQFmqC65AOkFwlQac1AZV0CN0gYkAB9UrAbQAYBdRUABwHtYBLAC59uAOw4gAHogCMADmaEAnIuazZ0gMwB2RQFYVAFgA0IAJ6JZ2wsy3MATIoBsW6dP2K7AX08m0WPERkVHSkgMABgKvRLOxIIDz8QqLiUgjStkoqapo6+szGZjLKhAaWzI6KxdqqdrLevhg4BIRYgIRWgPD6hICqOoBcnoAZGYB3btSAe2qAKt6Ad6k9UeJxgsJiMcm69oQODi6yBgZasrrSeeYIWwaE61qOBna6+nbFtSB+DUQt7d39Q2MT0tFcvDOJ84iLOzLDyKNYbLY7PYWdZFRSyRzyYrMDTnAy3e4BJqYNqdXoDQDPsYBx+MmMWmCTmoAWSxWoLk4O2uxM+10ZyUO3UGkUmjcp3R9UxT1xr0A4EqAI2NAAxKETaJO+8VmSQB1JBYM2DKhCEcu0IWh1Gg01S0lRuPju-MagpeA0AK-GDQDccoAd4MAqsoy2I-ckKhCA4GrOmqyFMxCOVmOewMyznXReE0Y83Y9qAPjMuoBja0Adh6AWeVABGZ1BdZPl-wQaiBBmkzGkmrOpw0LIDB3hhBRshpxbsOkcfP8sZxicAmKmAe+jM9RALOJgAbTQA68sMc2685TA2XCCX5C5HFctjXw4RnBoy25pKC9Bp2w8sV2un2B4BoOUAAHITNhTKd-GcFxtFEvbiuOKuONdbJSpVRVrQ7FLXJDwFONCEAEE1ADAXK9AFNrbNb1Je8KUkGR5HSVQOWyQwa31IFdnWfUDByTU0WjM1HnA6C4OzT47zlB9UI1Owa1SDRZGOdidjKYi7BbKM6g7SicWoy94MYOwvldBiUOSQsX1LctNg-at8gQDZHG1Lllx0FsnA0NtyKEwgpWePE3nGScZI9DZFE4oCUQ0XJzghVjTl0Y4dV0LZNVLYtQMaUyhQGMVxSeKzflkxBbPs5EDCcjYW22Vj9A8xc7ARDxiNBGojKPILLWoG0HWdRDZUimyDDsywHPi5ykt0Vizg8j8kq2NVdACoggsTAcIvdfNDWkecUVcM5rlBC43Ocestj42RlDsVJqi6kzwhEmCxIQqTc0Y5IywUZRMKyPQcLU9R6z4rkUThSELlWoLRPEuikOs-NI1Y7ZNOUeFAMUBKloe9b2ie7NJPoirBq3EbizLVFJsatTdh1DdNlcBxOQMZFcpNERuAgOBxBjfAIYGx8AFovzUynrGYOn6YZumzlWoJKFJ6cmPONc7A0Ddrq5ZE5B0VannZvbEGqDynKAwxl13TZ1SrOyDARLQNnOcoqoPPKwJxS0xaihA9V56XmFlnZyjVtcESUEoWV3IWWxF8DE1TTMDY9Q0OOLDxFw2Qt1Qhaw3E1bleJZZ2TzPDMPah73d2qGx-cbdVZB0axtmYSN9UAtPcsEo9BSe2PHxLVldGI3R1D41QWUR-Yg159KdCzr3AKBtoS6YjKgXWVxIyyyw1fVTQVEun3NcwvQO7M-ou+SLcFD7twVgqYe3N0Xmqt+jHckBnXAuBwhepj17IcfTUtHneKecWYj2JYpHTk03JLk2AyK7kTqD+6o-i7PsmTEVC8wyvudw6h-r1xkGcLeOwdDrD0OcFE3hvBAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5SFnow4jaDNtQBnKC5zQFmqC65AOkFwlQac1AZV0CN0gYkAB9UrAbQAYBdRUABwHtYBLAC59uAOw4gAHogBMzAKyEAnABY5AZmbK10uQEZFc6QBoQAT0TLluwnIBsutQ7VqA7FqsuAvp5NoseIjIqOlJAYADAVeiWdiQQHn4hUXEpBGkdJVUNLR19QxNzFOZrFzU5F0VFXTllRXtlAA5vXwwcAkIsQEIrQHh9QkBVHUAuT0AMjMA7t2pAPbVAFW9AO9SBqPE4wWExGOS9F0JpZWK3e1tFNWVjM0Q65WZCQttXaRrlW1s63UaQPxaiDu7+4bGpmd1orl4C0Sy0Qq3Wm1ct10u32h3yijqCl00NK9TkD2RyieLwCbUwXV6gxGgGfYwDj8bMYvMEktQCtdGsNlsoTCDnlEC59IQXBy5IZoQd6dJsc1ce9CIA+Mz6gGNrQB2HoBZ5UAEZnUCkA+KLJLHRRrNS2VQue5aAz6tkIOq68HQtw1Ny8tTC-ytMWSwCYqYB76MV1EAs4mABtNADry4xVsUB1I1CEu1mYtmkajqCLj4ZNewU12RZuYdX1ugaPmeIsd+O6LvdSsA0HKAADkZmw5sH1SDTVrCDq9Qa1EbbImtI2XNJdgZ1PdHPbXniCYAQTUAYC7lwCm1sqq5Sa8DaYhkQjCNV09dFJGNDqTS5DOctTzZMwVEPRQXCBPp8q-tW1YvJJrtbrSi22ybbIVCPZdFYqrY3YZtmTQOm8l6SoACEaAJd+HrloAdvGBlStZLgguipNYvLdoosg4aolQmqodRrm4zAuJo0hmuR6jnvmBJQbBSqAOBKgBGxoADEoRF0SELjST5hnCy7cmo5xaPYdhajGzi0eB9F9DBHqACvxoyANxygA7wYAqsrcQ+vHJNIlTpOomjaHoBgCQg2jSIQf6InYGz2FqIG5mBhCcR8RLfNMWlAjpiCtsRGi4ZJZFWPsJo5Mo6yZpGpwqMwdo5jirSuYSXwTJ5d7ztpoZ+Y2zCBXUGhuA4yhhYiijnIUVR1Cc1ytkKCV5kQyXXmWM5eSGdb6sJVh7NoMbQhmLilWaJFmuiCK3HU6bSS54RjpOrW3v8QZZXWmyWdclFboUdQbGRQ1HGhDzCfcuh5ak6KIo5iVNXNhZyYx1AIe1KF8S4I1okBjgbHIeVhYBZxVDqlS7MUBXxaBw7JQxHqsWx7wvY+KxmbIsY2L9FQGH1NENc50MPYpKkaYjPkpGkKiGVkJm5IdDyNqkFR3KsRHeDmIjcBAcDiDd97eaGAC07aHYLFXMGL4sS3l12NSQFCULzHWoaytPCfS+j7FhDyFPVkMXl0CuvckjhnDotjqIiqNZn+JquNYlSphkBX9jNYqfEMBtI756LrHY5uGOmVslYd1QRfub7pn1Y22C7EHSvKCoe6T+7Ca4Op7RTZq6CaZqWVusY6HIWrlHsMeyW6iqJ6GyddmnMVEfYHbCVUZGUehGa8jrTnDmKLVTpXdZnbsa7lCcEcaKeah7r95wOKePayNI+qdzdI73fJCeZXzA-OJZk27Ke9Q6JPwdo5Yu16Y4FSIjNrn96henWI46FiyoBwGNbh2VDqjYVD21QlBraOuMoZ3RSu7Teis+I6HKk-E8r9rh6CDvkekmg1wFVnhbOqWJgG4magtPuEDDaIEuBFA4BUtAaAKnsJBy5qoRVbK2YouwpqL2wbrJKoCYYb1VFvVCsZtRanVgcHUOoDrIPIphek71LiRiXtg7wQA */
   id: "词汇学习机器人",
   initial: "初始界面",
+  context: {
+    questionCount: 0,
+    correctCount: 0,
+  },
   states: {
     初始界面: {
+      entry: assign({
+        questionCount: 0,
+        correctCount: 0,
+      }),
       on: {
         开始学习: "学习模式",
         开始考试: "考试模式",
@@ -17,12 +25,27 @@ export const vocabularyMachine = createMachine({
         展示题目: {
           on: {
             回答问题: [
-              { target: "显示正确反馈", cond: "答案正确" },
-              { target: "显示错误反馈" },
+              { 
+                target: "显示正确反馈", 
+                cond: "答案正确",
+                actions: assign({
+                  correctCount: (context) => context.correctCount + 1,
+                  questionCount: (context) => context.questionCount + 1,
+                })
+              },
+              { 
+                target: "显示错误反馈",
+                actions: assign({
+                  questionCount: (context) => context.questionCount + 1,
+                })
+              },
             ],
-            跳过: "处理下一步",
-            切换到考试模式: "处理下一步",
-            返回主菜单: "处理下一步",
+            跳过: {
+              target: "处理下一步",
+              actions: assign({
+                questionCount: (context) => context.questionCount + 1,
+              })
+            },
           },
         },
         显示正确反馈: {
@@ -36,33 +59,71 @@ export const vocabularyMachine = createMachine({
         },
         处理下一步: {
           always: [
-            { target: "#词汇学习机器人.初始界面", cond: "应该返回主菜单" },
-            { target: "#词汇学习机器人.考试模式", cond: "应该切换到考试" },
+            { target: "显示成绩反馈", cond: (context) => context.questionCount >= 10 },
             { target: "展示题目" },
           ],
         },
+        显示成绩反馈: {
+          on: {
+            下一轮: {
+              target: "展示题目",
+              actions: assign({
+                questionCount: 0,
+                correctCount: 0,
+              })
+            },
+            切换到考试模式: "#词汇学习机器人.考试模式",
+            返回主菜单: "#词汇学习机器人.初始界面",
+          }
+        }
       },
     },
     考试模式: {
       initial: "展示题目",
+      entry: assign({
+        questionCount: 0,
+        correctCount: 0,
+      }),
       states: {
         展示题目: {
           on: {
-            回答问题: "显示反馈",
-            切换到学习模式: "处理下一步",
-            返回主菜单: "处理下一步",
+            回答问题: [
+              {
+                target: "处理下一步",
+                cond: "答案正确",
+                actions: assign({
+                  correctCount: (context) => context.correctCount + 1,
+                  questionCount: (context) => context.questionCount + 1,
+                })
+              },
+              {
+                target: "处理下一步",
+                actions: assign({
+                  questionCount: (context) => context.questionCount + 1,
+                })
+              }
+            ]
           },
-        },
-        显示反馈: {
-          always: "处理下一步",
         },
         处理下一步: {
           always: [
-            { target: "#词汇学习机器人.初始界面", cond: "应该返回主菜单" },
-            { target: "#词汇学习机器人.学习模式", cond: "应该切换到学习" },
-            { target: "展示题目" },
-          ],
+            { target: "显示成绩反馈", cond: (context) => context.questionCount >= 10 },
+            { target: "展示题目" }
+          ]
         },
+        显示成绩反馈: {
+          on: {
+            下一轮: {
+              target: "展示题目",
+              actions: assign({
+                questionCount: 0,
+                correctCount: 0,
+              })
+            },
+            切换到学习模式: "#词汇学习机器人.学习模式",
+            返回主菜单: "#词汇学习机器人.初始界面",
+          }
+        }
       },
     },
   },

@@ -159,10 +159,10 @@ export const counter = createMachine({
       always: {
         target: "Disabled",
         cond: "count > 5",
-      }
+      },
     },
     Disabled: {},
-  }
+  },
 }).withConfig({
   guards: {
     "count > 5": (context) => context.count > 5,
@@ -172,4 +172,29 @@ export const counter = createMachine({
       count: (context) => context.count + 1,
     }),
   },
+});
+
+export const authenticationMachine = createMachine({
+  /** @xstate-layout N4IgpgJg5mDOIC5QEECuAXAFmAduglgMYCGBA9jgHQDC2hA1vjlAASqxgBOLADlwLb5YsfBVgsANmABuYCQGIACgKEixLCGHTF8ElpzCEw+WRADaABgC6iUDzIjyOWyAAeiAMwAWC5R9eATh8LADYQgHYPD3CAGhAAT0QARg8AygAOJIAmQKys8K8kgI90gF9SuLQsXAISJxo6RmY2Dm4+TkFhURxxKVkFZQ7VbvFNbV19Q2NTMySbJBB7R26XdwRvX38gi1CIqNiE5ID0yg8LLItwgp8i7y9yyoxsPCJSbobDJtZ2Ll4VLvUfTkSn+ah6Gi0Oj0BiMJkgZiy8zsDnwTlWnh8fgsgWCYUi0TiiQQmVOeQCWVSFwArCEvFSPOUKiAcGRNPAFlVnrU3hQXEtUSsFmsALQhQmIYVUygBGWyuVyhlMzk1V71WifJjfVp-IYA8FAiR8lFooWILxZcUIAJJShJFJZAJU8JJS7hLJJe5Kp4qurvZAQQTOBb8k2gNZXG1UrxeDzZJJUgIhd3pS0pNLHbHOgLhBPbMpe6ovX0USgAOTIHWIhuDxsFYcQEcoUZjcYTSaSKcOCCKJy84R2Pg8DqTUSyDxAyqLPKo5Z1nTBRuWvNNCEbzdj7rbyctJMCFgCFg8SYptPSnvKQA */
+  id: "Authentication",
+
+  states: {
+    "Checking user permissions level": {
+      on: {
+        "Permissions detail received": [{
+          target: "Admin",
+          cond: "User is admin",
+        }, {
+          target: "Normal",
+          cond: "User is normal"
+        }, "No permission"],
+      },
+    },
+
+    Admin: {},
+    Normal: {},
+    "No permission": {},
+  },
+
+  initial: "Checking user permissions level",
 });

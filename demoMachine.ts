@@ -194,13 +194,15 @@ export const counter = createMachine({
 });
 
 export const authenticationMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QEECuAXAFmAduglgMYCGBA9jgHQDC2hA1vjlAASqxgBOLADlwLb5YsfBVgsANmABuYCQGIACgKEixLCGHTF8ElpzCEw+WRADaABgC6iUDzIjyOWyAAeiAMwAWC5R9eATh8LADYQgHYPD3CAGhAAT0QARg8AygAOJIAmQKys8K8kgI90gF9SuLQsXAISJxo6RmY2Dm4+TkFhURxxKVkFZQ7VbvFNbV19Q2NTMySbJBB7R26XdwRvX38gi1CIqNiE5ID0yg8LLItwgp8i7y9yyoxsPCJSbobDJtZ2Ll4VLvUfTkSn+ah6Gi0Oj0BiMJkgZiy8zsDnwTlWnh8fgsgWCYUi0TiiQQmVOeQCWVSFwArCEvFSPOUKiAcGRNPAFlVnrU3hQXEtUSsFmsALQhQmIYVUygBGWyuVyhlMzk1V71WifJjfVp-IYA8FAiR8lFooWILxZcUIAJJShJFJZAJU8JJS7hLJJe5Kp4qurvZAQQTOBb8k2gNZXG1UrxeDzZJJUgIhd3pS0pNLHbHOgLhBPbMpe6ovX0USgAOTIHWIhuDxsFYcQEcoUZjcYTSaSKcOCCKJy84R2Pg8DqTUSyDxAyqLPKo5Z1nTBRuWvNNCEbzdj7rbyctJMCFgCFg8SYptPSnvKQA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QEECuAXAFmAduglgMYCGBA9jgHQDC2hA1vjlAASqxgBOLADlwLb5YsfBVgsANmABuYCQGIIFMJSbSy9FWiy4CJclVpgGTVuy68BQkWMky5CNWX2icAbQAMAXU9fEoHjIRA38QAA9EAGYAdgBWSgAWDwSATgAmFIBGWMyADgA2fOSAGhAAT0RctMp82LqU3Ji02ITY3NiAXw7S7Ww8IlJXGjpGZjYObj5OQWFXcSlZBSUcFSdNSl7dAYNh41GzCctp6zm7RcccdRcKXzdMvyQQQODXUIiEGPik1IzsvMKSuVEJkEplKCCcrkUq08ploV0ehg+npBhRdiYxuZJlZZrYFnJFMpVJcNFokVtroYRqZxhYpjMbDh5vYJBcrqj3N43GkHgEgvgQo93p9Esl0llIQCEqUKh9ImCEglIpF8ml8ul8pEMp1uiBNv1Kej9rTscdcUyzgSuJwyJxKDwJKQAGa2-gbckGjlGmlYo4M0741lOSm3byhZ4C15CqJxUU-CX-IrSoEINIxSjRaFZVWRaFa-IIvUelE7IwYg50nGM5mLeTW232x3oF3Td06T2l6mYw70k54lls5wc273cP8wWgYWx77iv4FJMyxBpXIJGpwzK5hIArW5Qv6ktDAAq+H4YDIGHkACUAKKHy8ATV8Y5eFDeiGiHkilGXzWakSS0TtMmsp5NElApOqoJqoBoIpLEkRdLqOBkBAcChPu2xRnyL44G+CAALT5IuBH5JQHjkRRlEUWkmR7sWmFomWxq+r25o1nIz6Rq+0YIAkaTEWksY5B4sQNHB0RpABOqIu2B5osgECCLhjwRhO4SVCC34SZkIISYU0SZERKa5GCWq-IqW5pB4Ep0bJDFUAAcq6xASJxanvCZq6CTRulqvkBlGSBuaUCZzQibEzQJFU0S2ci9mUE5fp9sp2FcSl6kIJ5Wk+Qken+YZxFmSFObQtE+R8YUKSxRSXrHqe57oG5WEZVl3k6blfkBQJkQeCFuQeDmZUgp+W6IR0QA */
   id: "Authentication",
 
   states: {
     "Checking user permissions level": {
-      on: {
-        "Permissions detail received": [
+      invoke: {
+        src: "Check user permissions",
+
+        onDone: [
           {
             target: "Admin",
             cond: "User is admin",
@@ -211,15 +213,40 @@ export const authenticationMachine = createMachine({
           },
           "No permission",
         ],
+
+        onError: [
+          {
+            target: "Timeout",
+            cond: "Error is a timeout error",
+          },
+          "No permission",
+        ], 
       },
     },
 
     Admin: {},
     Normal: {},
     "No permission": {},
+    Timeout: {
+      on: {
+        RETRY: "Checking user permissions level"
+      }
+    }
   },
 
   initial: "Checking user permissions level",
+}).withConfig({
+  services: {
+    "Check user permissions": async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return {
+        user: {
+          name: "John Doe",
+          permissions: ["admin"],
+        },
+      };
+    },
+  },
 });
 
 export const fooMachine = createMachine({
@@ -229,19 +256,19 @@ export const fooMachine = createMachine({
   states: {
     "new state 1": {
       on: {
-        FOO: "new state 2"
-      }
+        FOO: "new state 2",
+      },
     },
     "new state 2": {
       on: {
-        BAR: "new state 1"
-      }
-    }
+        BAR: "new state 1",
+      },
+    },
   },
 
   initial: "new state 1",
 
   on: {
-    BAR: ".new state 2"
-  }
+    BAR: ".new state 2",
+  },
 });

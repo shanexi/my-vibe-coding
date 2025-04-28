@@ -194,7 +194,7 @@ export const counter = createMachine({
 });
 
 export const authenticationMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QEECuAXAFmAduglgMYCGBA9jgHQDC2hA1vjlAASqxgBOLADlwLb5YsfBVgsANmABuYCQGIIFMJSbSy9FWiy4CJclVpgGTVuy68BQkWMky5CNWX2icAbQAMAXU9fEoHjIRA38QAA9EAGYAdgBWSgAWDwSATgAmFIBGWMyADgA2fOSAGhAAT0RctMp82LqU3Ji02ITY3NiAXw7S7Ww8IlJXGjpGZjYObj5OQWFXcSlZBSUcFSdNSl7dAYNh41GzCctp6zm7RcccdRcKXzdMvyQQQODXUIiEGPik1IzsvMKSuVEJkEplKCCcrkUq08ploV0ehg+npBhRdiYxuZJlZZrYFnJFMpVJcNFokVtroYRqZxhYpjMbDh5vYJBcrqj3N43GkHgEgvgQo93p9Esl0llIQCEqUKh9ImCEglIpF8ml8ul8pEMp1uiBNv1Kej9rTscdcUyzgSuJwyJxKDwJKQAGa2-gbckGjlGmlYo4M0741lOSm3byhZ4C15CqJxUU-CX-IrSoEINIxSjRaFZVWRaFa-IIvUelE7IwYg50nGM5mLeTW232x3oF3Td06T2l6mYw70k54lls5wc273cP8wWgYWx77iv4FJMyxBpXIJGpwzK5hIArW5Qv6ktDAAq+H4YDIGHkACUAKKHy8ATV8Y5eFDeiGiHkilGXzWakSS0TtMmsp5NElApOqoJqoBoIpLEkRdLqOBkBAcChPu2xRnyL44G+CAALT5IuBH5JQHjkRRlEUWkmR7sWmFomWxq+r25o1nIz6Rq+0YIAkaTEWksY5B4sQNHB0RpABOqIu2B5osgECCLhjwRhO4SVCC34SZkIISYU0SZERKa5GCWq-IqW5pB4Ep0bJDFUAAcq6xASJxanvCZq6CTRulqvkBlGSBuaUCZzQibEzQJFU0S2ci9mUE5fp9sp2FcSl6kIJ5Wk+Qken+YZxFmSFObQtE+R8YUKSxRSXrHqe57oG5WEZVl3k6blfkBQJkQeCFuQeDmZUgp+W6IR0QA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QEECuAXAFmAduglgMYCGBA9jgHQDC2hA1vjlAASqxgBOLADlwLb5YsfBVgsANmABuYCQGIIFMJSbSy9FWiy4CJclVpgGTVuy68BQkWMky5CNWX2icAbQAMAXU9fEoHjIRA38QAA9EAGYADgBWSgAWDwSATljIlJSARkiANgAmFIAaEABPRCyE-MpK3ISEgHZIhoToho9o3IBfLpLtbDwiUlcaOkZmNg5uPk5BYVdxKVkFJRwVJ01Kft0hg1HjcbMpy1nrBbtlxxx1FwpfNyy-JBBA4NdQiIQY+KTU9MycgVimVEPkPB5KLk8h5mrkPFloglIjEen0MAM9MMKPsTBNzNMrPNbEs5IplKprhotOidrdDGNTJMLDM5jYcIt7BIrjcse5vG58k8AkF8CFnp9volkmkMtk8oUSuUvnFKClIlUwflkRl8g1USBtoM6TjDkyCacieyLqSuJwyJxKDwJKQAGb2-hbGlG3kmxn4k6s84krlOOn3byhV6i97iqIq34ygHy4FKwrxXJZFIeAEpBKxXXdXoGr2YvZGXFHZmEtkc5byW32x3O9Bu2aenTessMvHHFlnYmc7nOXn3R6RkVi0AS+PS-5yoGKqJJSgNBq5XKxFINHIpOFZQtojulkYAFXw-DAZAw8gASgBRE83gCavnHbwoH0Q26ykKysWi0SRPu7Tbgki4IPkeYrmqm7RFk+TwQ0m75PqhrHti5amv6faWrWpLUMgABy1B3gAMq+zxRpO4Rxj8s6yoCCogggcGUJE+SFFkCKbruGR6vqOBkBAcChGhuwxsK744J+CAALS5OBsnxJkKmqWpkSoSW4kYd2lbmoGA7LG+0YfrGCBVOB7ENCuyJxP+G7gmCB7Fke2lUMgECCNJlEThJNEsRxkIeLECTrtEW6NFq4E7qq0TJOx+ZceCKSaa5xqEe6xASMZ1GfNEgVwiFYURQ0UXMZm0SJO0HgcS0cVNAkqUYm5lAZQG-beZJJmdf5+XVIVoW5OFLSlZEllrpQsSZrmMIJFkDRqilRZicaZ4Xle6A5X5eUFcFg3DZFY3MfkbSUG0lRxLuaRpM5K0+tQxA4IQciQFtplTogfVBUVQ0lWVSqsakHQpLVYING0KE9F0QA */
   tsTypes: {} as import("./demoMachine.typegen").Typegen4,
   schema: {} as {
     services: {
@@ -234,16 +234,23 @@ export const authenticationMachine = createMachine({
           "No permission",
         ],
       },
+
+      on: {
+        CANCEL: "Canceled"
+      }
     },
 
     Admin: {},
     Normal: {},
     "No permission": {},
+
     Timeout: {
       on: {
         RETRY: "Checking user permissions level",
       },
     },
+
+    Canceled: {}
   },
 }).withConfig({
   guards: {

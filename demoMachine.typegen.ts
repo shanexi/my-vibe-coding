@@ -155,7 +155,7 @@ export interface Typegen4 {
         eventsCausingServices: {
           "Check user permissions": "RETRY" | "xstate.init";
         };
-        matchesStates: "Admin" | "Checking user permissions level" | "No permission" | "Normal" | "Timeout";
+        matchesStates: "Admin" | "Canceled" | "Checking user permissions level" | "No permission" | "Normal" | "Timeout";
         tags: never;
       }
   

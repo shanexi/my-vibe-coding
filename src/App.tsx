@@ -4,11 +4,11 @@ import { callMachine } from "../demoMachine";
 function App() {
   const [state, send] = useMachine(callMachine, {
     actions: {
-      "Mute microphone": () => {
-        console.log("Mute microphone");
+      "Mute microphone"() {
+        alert("Microphone is muted");
       },
-      "Unmute microphone": () => {
-        console.log("Unmute microphone");
+      "Unmute microphone"() {
+        alert("Microphone is unmuted");
       },
     },
   });

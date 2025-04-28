@@ -127,3 +127,37 @@ const machine2 = createMachine({
   },
 });
 ```
+
+## actions
+
+### run on transitions
+
+```ts
+Microphone: {
+    states: {
+    Mute: {
+        on: {
+        Unmute: {
+            target: "Unmuted",
+            actions: "Unmute microphone",
+        },
+        },
+    },
+    Unmuted: {
+        on: {
+        Mute: {
+            target: "Mute",
+            actions: "Mute microphone",
+        },
+        },
+    },
+    },
+
+    initial: "Mute",
+},
+```
+
+### run on entry/exit
+
+
+

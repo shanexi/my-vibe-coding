@@ -1,0 +1,129 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+## states and transitions and events
+
+最基本的
+
+```ts
+export const demoMachine = createMachine({
+  id: "Dog",
+  initial: "Asleep",
+  states: {
+    Asleep: {
+      on: {
+        "Loud Noice": "#Dog.Awake",
+        "Smells Food": "Awake",
+      },
+    },
+    Awake: {
+      on: {
+        "Falls asleep": "Asleep",
+      },
+    },
+  },
+});
+```
+
+## final state
+
+```ts
+export const walkMachine = createMachine({
+  id: "Walk",
+  initial: "Waiting",
+  states: {
+    Waiting: {
+      on: {
+        "Leave home": "On a walk",
+      },
+    },
+
+    "On a walk": {
+      on: {
+        "Get back home": "Walk ended",
+      },
+    },
+
+    "Walk ended": {
+      type: "final",
+    },
+  },
+});
+```
+
+## compund state
+
+```ts
+  id: "Dog",
+  initial: "Asleep",
+  states: {
+    Asleep: {
+      on: {
+        "Loud Noice": "Awake.Scared",
+        "Smells Food": "Awake.Sleepy",
+      },
+    },
+    Awake: {
+      on: {
+        "Falls asleep": "Asleep",
+      },
+      states: {
+        Sleepy: {
+          on: {
+            "Loud noice": "Scared"
+          }
+        },
+        Scared: {}
+      },
+
+      initial: "Sleepy"
+    },
+  },
+});
+```
+
+## parallel state
+
+```ts
+const machine2 = createMachine({
+  id: "Call machine",
+  type: "parallel",
+  states: {
+    Microphone: {
+      states: {
+        Mute: {
+          on: {
+            Unmute: "Unmuted",
+          },
+        },
+        Unmuted: {
+          on: {
+            Mute: "Mute",
+          },
+        },
+      },
+
+      initial: "Mute",
+    },
+    Video: {
+      states: {
+        "Showing video": {
+          on: {
+            "Hide video": "Hiding video",
+          },
+        },
+
+        "Hiding video": {
+          on: {
+            "Show video": "Showing video",
+          },
+        },
+      },
+
+      initial: "Showing video",
+    },
+  },
+});
+```

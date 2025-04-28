@@ -160,4 +160,65 @@ export interface Typegen4 {
         matchesStates: "Admin" | "Canceled" | "Checking user permissions level" | "No permission" | "Normal" | "Timeout";
         tags: never;
       }
+
+export interface Typegen5 {
+        '@@xstate/typegen': true;
+        internalEvents: {
+          "xstate.init": { type: "xstate.init" };
+        };
+        invokeSrcNameMap: {
+          
+        };
+        missingImplementations: {
+          actions: never;
+          delays: never;
+          guards: never;
+          services: never;
+        };
+        eventsCausingActions: {
+          
+        };
+        eventsCausingDelays: {
+          
+        };
+        eventsCausingGuards: {
+          
+        };
+        eventsCausingServices: {
+          
+        };
+        matchesStates: "new state 1" | "new state 2";
+        tags: never;
+      }
+
+export interface Typegen6 {
+        '@@xstate/typegen': true;
+        internalEvents: {
+          "": { type: "" };
+"xstate.init": { type: "xstate.init" };
+        };
+        invokeSrcNameMap: {
+          
+        };
+        missingImplementations: {
+          actions: "Increment count by event value";
+          delays: never;
+          guards: "Count > 5";
+          services: never;
+        };
+        eventsCausingActions: {
+          "Increment count by event value": "Increment count";
+        };
+        eventsCausingDelays: {
+          
+        };
+        eventsCausingGuards: {
+          "Count > 5": "";
+        };
+        eventsCausingServices: {
+          
+        };
+        matchesStates: "Disabled" | "Enable";
+        tags: never;
+      }
   

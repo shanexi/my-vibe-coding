@@ -1,8 +1,8 @@
 import { useMachine } from "@xstate/react";
-import { authenticationMachine } from "../demoMachine";
+import { barMachine } from "../demoMachine";
 
 function App() {
-  const [state, send] = useMachine(authenticationMachine);
+  const [state, send] = useMachine(barMachine);
   return (
     <>
       <div className="card">
@@ -24,6 +24,16 @@ function App() {
             </button>
           );
         })}
+
+        <button
+          onClick={() =>
+            send("Increment count", {
+              value: 2,
+            })
+          }
+        >
+          Increment
+        </button>
       </div>
     </>
   );

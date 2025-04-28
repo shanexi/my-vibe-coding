@@ -9,12 +9,12 @@ export const dogMachine = createMachine({
     Asleep: {
       on: {
         "Loud Noice": "Awake.Scared",
-        "Smells Food": "Awake.Sleepy"
+        "Smells Food": "Awake.Sleepy",
       },
 
       after: {
-        "10000": "Awake"
-      }
+        "10000": "Awake",
+      },
     },
     Awake: {
       on: {
@@ -240,12 +240,12 @@ export const authenticationMachine = createMachine({
       },
 
       on: {
-        CANCEL: "Canceled"
+        CANCEL: "Canceled",
       },
 
       after: {
-        "1500": "Timeout"
-      }
+        "1500": "Timeout",
+      },
     },
 
     Admin: {},
@@ -258,7 +258,7 @@ export const authenticationMachine = createMachine({
       },
     },
 
-    Canceled: {}
+    Canceled: {},
   },
 }).withConfig({
   guards: {
@@ -282,6 +282,7 @@ export const authenticationMachine = createMachine({
 
 export const fooMachine = createMachine({
   /** @xstate-layout N4IgpgJg5mDOIC5QDED2qCyBDAxgCwEsA7MAOhIHcACWAFy1rCoEYBiZAeQ4G0AGAXUSgADqlgFaBVESEgAHomYB2JaQDMANg1rezABybmAVl569AGhABPRUrWl9AFj13jRgEwq9jgL4-LaJi4hCTkYNR0DEzurABCAIIASnyCSCCi4pLSsgoITqR67kZGjgCcagalHpY2CHq8pM5VesruekZKzI5GfgHo2PjEYHFJKbIZElIyabmO7jWIRQ1Kni5tnp68vr0gRKgQcLKBAyFg42KT2TOIALQaCwg3RqSlr6VmGu+6vJ3MO8fBIZhCL0Rgsc6ZKY5RBzB56DSkdxqUpdTqlDTwkruf79QGhSg0UHRCGXaagXJqZgI7S8IzMIro+oqB5VUgdZgVCrMdFaT5+PxAA */
+  tsTypes: {} as import("./demoMachine.typegen").Typegen5,
   id: "FooMachine",
 
   states: {
@@ -301,5 +302,53 @@ export const fooMachine = createMachine({
 
   on: {
     BAR: ".new state 2",
+  },
+});
+
+export const barMachine = createMachine({
+  /** @xstate-layout N4IgpgJg5mDOIC5QCMCGAnAsqgxgCwEsA7MAOgFEjVkAbMAYgG0AGAXUVAAcB7WAgFwLciHEAA9EARgCs00pIBMAFgCcK5gHYVADmYK1ANgA0IAJ6JtG0hoDMSmwcmSVilQYM2Avp5NosuQhIKKloGAEkiHHQwAFswIn4AAhxuAFcElnYkEB4+QWFRCQQAWiU5aWYbLVVbCoUNBRNzBEklbVIVLVbtBVlmAwVJDW8fECJuCDhRP2x8YjBRXIEhEWyi4pUbUgqqlRqbOoamxGLmUm0bS7sdNUHmJUltb18MWcCySmo6Rd5lgrXEG1jghtAZSG0VNINA96tIbJJmCpniAZgF5qQACIEWBfSA-PIrQqIeqSUgKBQHZyggzaJTMaTAx4KMkeQYXZQGDQGekjTxAA */
+  tsTypes: {} as import("./demoMachine.typegen").Typegen6,
+  id: "barMachine",
+  context: {
+    count: 0,
+  },
+  schema: {
+    events: {} as {
+      type: "Increment count";
+      count: number;
+    },
+  },
+
+  states: {
+    Enable: {
+      on: {
+        "Increment count": {
+          target: "Enable",
+          actions: "Increment count by event value",
+        },
+      },
+
+      always: {
+        target: "Disabled",
+        cond: "Count > 5",
+      },
+    },
+
+    Disabled: {},
+  },
+
+  initial: "Enable",
+}).withConfig({
+  guards: {
+    "Count > 5": (context) => {
+      return context.count > 5;
+    },
+  },
+  actions: {
+    "Increment count by event value": assign((context, event) => {
+      return {
+        count: context.count + event.count,
+      };
+    }),
   },
 });

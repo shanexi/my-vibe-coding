@@ -1,8 +1,8 @@
 import { useMachine } from "@xstate/react";
-import { callMachine } from "../demoMachine";
+import { authenticationMachine } from "../demoMachine";
 
 function App() {
-  const [state, send] = useMachine(callMachine);
+  const [state, send] = useMachine(authenticationMachine);
   return (
     <>
       <div className="card">

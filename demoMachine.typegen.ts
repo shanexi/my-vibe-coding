@@ -124,4 +124,38 @@ export interface Typegen3 {
         matchesStates: "Disabled" | "Enabled" | "Enabled.Off" | "Enabled.On" | { "Enabled"?: "Off" | "On"; };
         tags: never;
       }
+
+export interface Typegen4 {
+        '@@xstate/typegen': true;
+        internalEvents: {
+          "done.invoke.Authentication.Checking user permissions level:invocation[0]": { type: "done.invoke.Authentication.Checking user permissions level:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
+"error.platform.Authentication.Checking user permissions level:invocation[0]": { type: "error.platform.Authentication.Checking user permissions level:invocation[0]"; data: unknown };
+"xstate.init": { type: "xstate.init" };
+        };
+        invokeSrcNameMap: {
+          "Check user permissions": "done.invoke.Authentication.Checking user permissions level:invocation[0]";
+        };
+        missingImplementations: {
+          actions: never;
+          delays: never;
+          guards: "Error is a timeout error" | "User is admin" | "User is normal";
+          services: "Check user permissions";
+        };
+        eventsCausingActions: {
+          
+        };
+        eventsCausingDelays: {
+          
+        };
+        eventsCausingGuards: {
+          "Error is a timeout error": "error.platform.Authentication.Checking user permissions level:invocation[0]";
+"User is admin": "done.invoke.Authentication.Checking user permissions level:invocation[0]";
+"User is normal": "done.invoke.Authentication.Checking user permissions level:invocation[0]";
+        };
+        eventsCausingServices: {
+          "Check user permissions": "RETRY" | "xstate.init";
+        };
+        matchesStates: "Admin" | "Checking user permissions level" | "No permission" | "Normal" | "Timeout";
+        tags: never;
+      }
   

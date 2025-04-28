@@ -121,12 +121,15 @@ export const callMachine = createMachine({
 });
 
 export const counter = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QBUD2UoBswDoDyAdgMRobYDaADALqKgAOqsAlgC7OoF0gAeiAjAGZKOAGwBWAByTRogJwAmUQBZKlcQBoQATwEB2UTnFyDewYLknlc5eIC+draSy48AMzcl0LqrSQhGFnZObj4EIREJaVlFFTVNHURJfhxBBQVYyj1+PVs5SQdHEAJUCDhuZ2xuQLYOLn8wgFpRLV0EZocnb2x8eoYmWpCGxGUFVoFKORw9E35KUVzBcVHlPU6QStcPaoHgvt5EJUkxcUE9Sn4Y5VFBZUFx8P4FHAzs+cXlhVXCuyA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QBUD2UoBswGIDaADALqKgAOqsAlgC5WoB2pIAHogLQBMBAdACwBGAOwBOAGwAOIQFYANCACeiCQGYeQvgQkSCKztILSVMgL4n5aDNh4B5BjktYwhEkhAVqdRszYIB0gX4xMX8ZAhCJMSN5JQROFWkefQCxITECPj4hKT4zC3QnWwAzIocC7BdmD1p6Jjdff0C+YNCDCKiVGMQBFREeER0+aWbpMRUxjLNzEAZUCDhmR2wqyhrveo5JfmFxKTlFTZ4CAhEBAXENEWbOPgk8kCWwWzryVa8X1kQxTh4dIU4JCkhD0QV0-FshtdBJxviozndpo9ikUVp5aj5EAC+s0Tli+JwBBI+J0Dn4hLwRMMQrtggEBLlEeUngARKiwACGACNsBBUWsPg1RkEQtIwu1oqSJE0RFodHoDEZTFMgA */
   tsTypes: {} as import("./demoMachine.typegen").Typegen3,
+
   id: "Toggle",
+
   context: {
     count: 0,
   },
+
   states: {
     On: {
       on: {
@@ -136,6 +139,7 @@ export const counter = createMachine({
         },
       },
     },
+
     Off: {
       on: {
         Toggle: {
@@ -144,10 +148,20 @@ export const counter = createMachine({
         },
       },
     },
+
+    Disabled: {},
   },
 
   initial: "On",
+
+  always: {
+    target: ".Disabled",
+    cond: "count > 5",
+  },
 }).withConfig({
+  guards: {
+    "count > 5": (context) => context.count > 5,
+  },
   actions: {
     increment: assign({
       count: (context) => context.count + 1,

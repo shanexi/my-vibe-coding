@@ -96,7 +96,8 @@ export interface Typegen2 {
 export interface Typegen3 {
         '@@xstate/typegen': true;
         internalEvents: {
-          "xstate.init": { type: "xstate.init" };
+          "": { type: "" };
+"xstate.init": { type: "xstate.init" };
         };
         invokeSrcNameMap: {
           
@@ -104,7 +105,7 @@ export interface Typegen3 {
         missingImplementations: {
           actions: "increment";
           delays: never;
-          guards: never;
+          guards: "count > 5";
           services: never;
         };
         eventsCausingActions: {
@@ -114,12 +115,12 @@ export interface Typegen3 {
           
         };
         eventsCausingGuards: {
-          
+          "count > 5": "";
         };
         eventsCausingServices: {
           
         };
-        matchesStates: "Off" | "On";
+        matchesStates: "Disabled" | "Off" | "On";
         tags: never;
       }
   

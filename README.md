@@ -22,3 +22,9 @@ chat 记录，不用重复在 chat 输入框里输入
 ## docs
 
 官方的文档（相比 cursor rules 就是私有的临时的文档）
+
+
+## 实验阶段总结 0429
+
+- 验证 AI 能正确生成 xstate（protocol）
+- context 类型变量需要 AI 自主决定是否需要，配合完成 actions 和 guards

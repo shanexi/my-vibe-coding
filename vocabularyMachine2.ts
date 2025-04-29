@@ -19,7 +19,15 @@ export type Protocol = {
   services: Services;
   context: {
     sayHi: string;
-    servicesReturnValues: Partial<Services>;
+    /*
+    原则上是定制逻辑越少越好
+
+    这个如果不需要，就需要定义 context（看是否过于定制）
+    */
+    // servicesReturnValues: Partial<Services>;
+    // 定制成 currentAnswer
+    currentAnswer?: string;
+    // 定制
     count: number;
     record: Record<string, [string, string]>;
   };
@@ -113,30 +121,28 @@ export const vocabularyMachine = createMachine({
   initial: "主界面",
 })
   .withConfig({
+    services: services,
     actions: {
       获取题目: assign((context, event) => {
-        context.servicesReturnValues.获取题目 = event;
-        return context;
+        return {
+          currentAnswer: event.data.answer,
+        };
       }),
       计数: assign({
         count: (context) => context.count + 1,
       }),
       记录正确答案: assign((context, event) => {
         context.record[context.count] = ["y", event["chatInput"]];
-        return context;
+        return { record: context.record };
       }),
       记录错误答案: assign((context, event) => {
         context.record[context.count] = ["n", event["chatInput"]];
-        return context;
+        return { record: context.record };
       }),
     },
-    services: services,
     guards: {
       正确: (context, event) => {
-        return (
-          context.servicesReturnValues?.获取题目?.data?.answer ===
-          event["chatInput"]
-        );
+        return context.currentAnswer === event["chatInput"];
       },
       未完成: (context, event) => {
         return context.count < 5;
@@ -145,7 +151,6 @@ export const vocabularyMachine = createMachine({
   })
   .withContext({
     sayHi: "Say Hi!",
-    servicesReturnValues: {},
     count: 0,
     record: {},
   });

@@ -1,8 +1,10 @@
 import { useMachine } from "@xstate/react";
 import { vocabularyMachine } from "../vocabularyMachine2";
+import { useState } from "react";
 
 function App() {
   const [state, send] = useMachine(vocabularyMachine);
+  const [chatInput, setChatInput] = useState("");
   return (
     <>
       <div className="card">
@@ -10,6 +12,7 @@ function App() {
           {JSON.stringify(
             {
               value: state.value,
+              event: state.event,
               context: state.context,
             },
             null,
@@ -17,9 +20,22 @@ function App() {
           )}
         </pre>
         <br />
+        <input
+          value={chatInput}
+          onChange={(e) => setChatInput(e.target.value)}
+          placeholder="输入消息"
+        />
         {state.nextEvents.map((evt) => {
           return (
-            <button key={evt} onClick={() => send(evt)}>
+            <button
+              key={evt}
+              onClick={() =>
+                send({
+                  type: evt,
+                  chatInput: chatInput,
+                })
+              }
+            >
               {evt}
             </button>
           );

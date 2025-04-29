@@ -1,8 +1,8 @@
 import { useMachine } from "@xstate/react";
-import { barMachine } from "../demoMachine";
+import { vocabularyMachine } from "../vocabularyMachine2";
 
 function App() {
-  const [state, send] = useMachine(barMachine);
+  const [state, send] = useMachine(vocabularyMachine);
   return (
     <>
       <div className="card">
@@ -24,16 +24,6 @@ function App() {
             </button>
           );
         })}
-
-        <button
-          onClick={() =>
-            send("Increment count", {
-              value: 2,
-            })
-          }
-        >
-          Increment
-        </button>
       </div>
     </>
   );

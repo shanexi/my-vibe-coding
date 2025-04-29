@@ -6,30 +6,31 @@ export type Service<
   TServiceName extends keyof TProtocol["services"]
 > = () => Promise<TProtocol["services"][TServiceName]["data"]>;
 
-export type Protocol = {
-  services: {
-    获取题目: {
-      data: {
-        question: string;
-        answer: string;
-      };
+export type Services = {
+  获取题目: {
+    data: {
+      question: string;
+      answer: string;
     };
   };
+};
+
+export type Protocol = {
+  services: Services;
   context: {
     sayHi: string;
-    currentAnswer?: string;
+    servicesReturnValues: Partial<Services>;
+    count: number;
+    record: Record<string, [string, string]>;
   };
 };
 
 export const vocabularyMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5SFnow4jaDNtQBnKC5zQFmqC65AOkG45QGVdAjdIGJAAfUGnNLAbQAYBdRUABwHtYBLAF15cAduxAAPRACYArADZCAdgCMAFkWKmM1aoCc2gDQgAnogAcywgGYpU3cqt6zMtbIC+bo2ix4iZKnSAwAGAq9HMbEgg3HyCImKSCFJWVoQyVnKqMlpSWopSykamCcoyhHJScrrqirr2ysqKHl4YOASEWIAKcoC3aoSA7cGAa8qAbnqAqjqAXJ6AGRmAd26UECJghLzCAG5cANZz3i1EHd39w+MTCAvLAMYAhjHCYWFiUQJCohHxZWYpMma5umZWuo5McgWIRSvd6KFxlOTpVTuTwgDa+NqYLq9QajSaUMAAJwxXAxhA4ABtzgAzHEAW0IcNa22Re0mhyWXDOFyurBuPDusUeiHUCjstlUTCYqjqVhkUgBCGUlUIyjkTDUxTkijMZnsVkasOa8OpqKmgEgEwCXRoAVb0AEhbXCK3C5xRA-XSlIVyKzKQVaMzyiXFFJyFVyFzOKTKxRyDWUraI7q6yiG00MZThTjsq1chA-SxKjTeoO2OT1CW5UrPEFB1RuvQhrVU8OEQB8ZiNAMbWgDsPQCzyoAIzMogGg5QAAcmMAAQ4nuABiVUIBuA0ArhnmhPRe7WyVOqTWTLFKQZXSgxwSgC0Znnos+DisTFkTF00KaPkrSNrjdbHe7fYxg5H47jbKnnNA8TU3sI5X9TC+HxaJuVhAsUNiOhYqi+j8qjlueYaXiMgCYqYA99E3oAs4nBIAyvqALJKkwTpEibTsmq7JG8qTpCqOhfP8JiIA4qilNR2hihkKogXBmwIohgA05oAdvEjpQgB7agOgBpmeOrIWkR74SPRqrJN6yhmBCTC5EwNhWMB9SEKqAbVD6q6fB4MLCFwEBwGIoavhyDwfogG6ejUZglmK6QMc5ml0QgG4CiUeTyCqDgMd6nHwv41lJnZCA2IQgrFGoiiispYIShCsVfFYbq2Nuy7qjCobcZ0EXEVFwrJMWy6rso5T1J5hQORUpTbrkxRQe8ZQyKFF47Ci+zFTJ8RQZYFV6CoNWJXmLw1I4qrCgBughflFYIRGfVSW+tmyQg1QKAtbrOkK6n1LRhSeokimZFIykODIDRLfBhWEIAjJqAKSxgALxiM-WbU8MglFKoqOKknxOB6J7WAG6iivKsjZl1K01vWzYtl9M7VVCpTZL6Ja2mqHp+WkFiXddop3WeXHUrWqGtijyZo-OZR-No8k1A4eY7ge7wsfISknnDj21vxI401F9TqTKIHvE6oLLs5eM-gTgMzZUObBvdXGBIAXOqABD-gCh+tQgB8poAkP-C1tZUpP63oy5lagSkk872BY3zaP+iV3R4QA */
+  /** @xstate-layout N4IgpgJg5mDOIC5SFnow4jaDNtQBnKC5zQFmqC65AOkG45QGVdAjdIGJAAfUGnNLAbQAYBdRUABwHtYBLAF15cAduxAAPRACYArADZCAdgCMAFkWKmM1aoCc2gDQgAnogAcywgGYpU3cqt6zMtbIC+bo2ix4iZKnSAwAGAq9HMbEgg3HyCImKSCFJWVoQyVnKqMlpSWopSykamCcoyhHJScrrqirr2ysqKHl4YOASEWIAKcoC3aoSA7cGAa8qAbnqAqjqAXJ6AGRmAd26UECJghLzCAG5cANZz3i1EHd39w+MTCAvLAMYAhjHCYWFiUQJCohHxZWYpMma5umZWuo5McgWIRSvd6KFxlOTpVTuTwgDa+NqYLq9QajSaUMAAJwxXAxhA4ABtzgAzHEAW0IcNa22Re0mhyWXDOFyurBuPDusUeiHUCjstlUTCYqjqVhkUgBCGUlUIyjkTDUxTkijMZnsVkasOa8OpqKmgEgEwCXRoAVb0AEhbXCK3C5xRA-XSlIVyKzKQVaMzyiXFFJyFVyFzOKTKxRyDWUraI7q6yiG00MZThTjsq1chA-SxKjTeoO2OT1CW5UrPEFB1RuvQhrVU8OEQB8ZiNAMbWgDsPQCzyoAIzMogGg5QAAcmMAAQ4nuABiVUIBuA0ArhnmhPRe7WyXaZLKZzvHMq9QyCUAWllCidWnUAZVsm95Z8laRtcbrY73b7GMHI-HcbZU85oHixQFpQFgq+ViDIo3eRSCkqYrsosipGYqjHpsCJniMgCYqYA99GXoAs4nBIAyvqALJKkwTpEibTsmuiKMkbypKoFRJPKTBmB6iiqIQTDVEwNR1DUcrkdB2pVrWSGXl2vb9kOY64ZaBGvjaOivOkPx-M6ObiiY0gBkoIKJORFTZBonGnt0PHIW2-E3newmPha+EvhIEnJN8uhSKquTvDIPwSkkdrsbI-p-mk2lhnBgA05oAdvEjpQgB7agOgBpmeOrJmc+DziZK7xMIQFj2MqGQQiWCmFOuNgvDuopSORqQuDIDQasIXAQHAYihk+HJxZZCCbiUNSQf66QOCWqhWBuwolI6Nj6N8ZQ-L6PkkBQdVJvFNgMfKLjqKKZi+rKEoQgxP5urYZj8uqMKhrBnRTWJjXCskxaFURYE5sRAE1IQ9g5k6jiOPoujjdSuy6sdFnxORlgXXoKjlPUPWKQgyoPT8JaVAuv66Ee+0Vr5Eb7D9DXxNUCgI26zpCkwTpBh6JSJN6xRMHZT2lR9VaAIyagCksYAC8YjOjM6+iUUqio4qSfE4Hq2dYAaLZkYFiuUNNwReLas8mYFQqU2S+jDNkOMThCkxYmSUw41NIyeKM1gh+ky-FctAeRGSlWU1QuGDhSsYQGTvGkgoBgGPwS7pIyBSOJuNfUBMyr+zv1GKXVqxr3OOKq-3BnrMGBIAXOqABD-gCh+tQgB8poAkP9+39DgpO1O0llYFiqC5s32BY3zaNRxFlR4QA */
   tsTypes: {} as import("./vocabularyMachine2.typegen").Typegen0,
   id: "词汇学习机器人",
 
   schema: {} as Protocol,
-  context: {
-    sayHi: "Say Hi!",
-  },
 
   states: {
     主界面: {
@@ -46,7 +47,7 @@ export const vocabularyMachine = createMachine({
             src: "获取题目",
             onDone: {
               target: "展示题目",
-              actions: "成功获取题目",
+              actions: "获取题目",
             },
             onError: "失败提示",
           },
@@ -70,18 +71,31 @@ export const vocabularyMachine = createMachine({
           on: {
             "下一题 or 到汇总页": [
               {
-                target: "展示题目",
+                target: "获取并展示题目",
                 cond: "未完成",
+                actions: "计数",
               },
               "显示本轮汇总",
             ],
           },
+
+          entry: "记录正确答案",
         },
 
         显示错误反馈: {
           on: {
             重试当前题目: "展示题目",
+            "下一题 or 到汇总页": [
+              {
+                target: "获取并展示题目",
+                cond: "未完成",
+                actions: "计数",
+              },
+              "显示本轮汇总",
+            ],
           },
+
+          entry: "记录错误答案",
         },
 
         显示本轮汇总: {
@@ -97,21 +111,41 @@ export const vocabularyMachine = createMachine({
   },
 
   initial: "主界面",
-}).withConfig({
-  actions: {
-    成功获取题目: assign((context, event) => {
-      return {
-        currentAnswer: event.data.answer,
-      };
-    }),
-  },
-  services: services,
-  guards: {
-    正确: (context, event) => {
-      return context.currentAnswer === event["chatInput"];
+})
+  .withConfig({
+    actions: {
+      获取题目: assign((context, event) => {
+        context.servicesReturnValues.获取题目 = event;
+        return context;
+      }),
+      计数: assign({
+        count: (context) => context.count + 1,
+      }),
+      记录正确答案: assign((context, event) => {
+        context.record[context.count] = ["y", event["chatInput"]];
+        return context;
+      }),
+      记录错误答案: assign((context, event) => {
+        context.record[context.count] = ["n", event["chatInput"]];
+        return context;
+      }),
     },
-    未完成: (context, event) => {
-      return true;
+    services: services,
+    guards: {
+      正确: (context, event) => {
+        return (
+          context.servicesReturnValues?.获取题目?.data?.answer ===
+          event["chatInput"]
+        );
+      },
+      未完成: (context, event) => {
+        return context.count < 5;
+      },
     },
-  },
-});
+  })
+  .withContext({
+    sayHi: "Say Hi!",
+    servicesReturnValues: {},
+    count: 0,
+    record: {},
+  });

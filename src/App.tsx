@@ -1,6 +1,6 @@
 import { useMachine } from "@xstate/react";
-import { vocabularyMachine } from "../vocabularyMachine2";
 import { useState } from "react";
+import { vocabularyMachine } from "../vocabularyMachine2";
 
 function App() {
   const [state, send] = useMachine(vocabularyMachine);
